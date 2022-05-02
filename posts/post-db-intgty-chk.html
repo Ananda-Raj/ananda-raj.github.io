@@ -86,7 +86,7 @@
 				        <a href="#"><img class="img-fluid" src="assets/images/blog/blog-post-db-intgty-chk.jpg" alt="image"></a>
 				        <figcaption class="mt-2 text-center image-caption">Image Credit: <a class="theme-link" href="simplebackups.com" target="_blank">simplebackups.com edited with photomosh and photopea</a></figcaption>
 				    </figure>
-				    <p>
+				    <p> 
 					Check if given compressed MySQL Database dumps are complete.
 					<br>
 					The script will take the list of one day old databases files (compressed gz) from specified location (/home/mysqlbackup/), first to a file and then loaded to an array. The database is checked for the string "Dump completed on" and then written to a log file. The execution is done as jobs, to enable multiple databases to be checked concurrently, decreasing execution time. (Here the value is 30) All logs are stored in a location (/usr/local/mysql-temp/) and logs older than 5 days are removed. The results are pushed into slack.
