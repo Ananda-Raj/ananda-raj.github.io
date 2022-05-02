@@ -80,6 +80,8 @@
 			    <header class="blog-post-header">
 				    <h2 class="title mb-2">Bash | Check MySQL Database integrity</h2>
 				    <div class="meta mb-3"><span class="date">Published on 1 Feb 2020</span><span class="time">5 min read</span></div>
+					<br>
+					<br>
 			    </header>
 			    
 			    <div class="blog-post-body">
@@ -88,20 +90,28 @@
 				        <a href="#"><img class="img-fluid" src="/assets/images/blog/blog-post-db-intgty-chk.jpg" alt="image"></a>
 				        <figcaption class="mt-2 text-center image-caption">Image Credit: <a class="theme-link" href="simplebackups.com" target="_blank">simplebackups.com edited with photomosh and photopea</a></figcaption>
 				    </figure>
+					<br>
 				    <p> 
 					Check if given compressed MySQL Database dumps are complete.
+					</p>
 					<br>
+					<p>
 					The script will take the list of one day old databases files (compressed gz) from specified location (/home/mysqlbackup/), first to a file and then loaded to an array. The database is checked for the string "Dump completed on" and then written to a log file. The execution is done as jobs, to enable multiple databases to be checked concurrently, decreasing execution time. (Here the value is 30) All logs are stored in a location (/usr/local/mysql-temp/) and logs older than 5 days are removed. The results are pushed into slack.
+					</p>
 					<br>
+					<p>
 					Execution time: For 10 1.6GB compressed (gz) database dump files, it will take ~2 minutes when all the 10 are executed concurrently.
+					</p>
 					<br>
+					<p>
 					You can add a cronjob similar to below to check this regularly.
-				    <pre>
+					</p>
+					<br>
+					<pre>
 					    <code>
 0 12 * * * /bin/bash /root/check-db-integrity.sh > /usr/local/mysql-temp/`date "+%d"`-check-db-integrity-execution.log 2> /usr/local/mysql-temp/`date "+%d"`-check-db-integrity-execution-err.log
 					    </code>
 				    </pre>
-					</p>
 				    
 				    <h3 class="mt-5 mb-3">The Script</h3>
 				    <pre>
