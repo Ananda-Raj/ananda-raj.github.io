@@ -1,38 +1,65 @@
+/* Global Styles */
 body {
     font-family: Arial, sans-serif;
     text-align: center;
-    background: #f4f4f4;
+    background: url('assets/images/bg-main.jpg') no-repeat center center fixed;
+    background-size: cover;
     color: #333;
     margin: 0;
     padding: 0;
 }
 
-body {
-    background: url('assets/images/bg-main.jpg') no-repeat center center fixed;
-    background-size: cover;
+/* Navigation Bar */
+nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: rgba(0, 95, 115, 0.9);
+    padding: 10px 0;
+    z-index: 1000;
 }
 
-header {
-    background: #005f73;
-    color: white;
-    padding: 50px 20px;
-}
-
-.scroll-btn {
-    display: inline-block;
-    padding: 10px 20px;
-    background: #0a9396;
+nav a {
     color: white;
     text-decoration: none;
-    border-radius: 5px;
+    padding: 10px 20px;
+    font-weight: bold;
     transition: 0.3s;
 }
 
-.scroll-btn:hover {
+nav a:hover {
     background: #94d2bd;
+    border-radius: 5px;
 }
 
-.contact img {
+/* Sections */
+section {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 50px;
+}
+
+/* Profile Image */
+.profile img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* Responsive Image */
+@media (max-width: 768px) {
+    .profile img {
+        width: 120px;
+        height: 120px;
+    }
+}
+
+/* Contact Section */
+#contact img {
     width: 150px;
     margin-top: 20px;
 }

@@ -1,8 +1,7 @@
-document.addEventListener("DOMContentLoaded", function() {
-    document.querySelectorAll('.scroll-btn').forEach(button => {
-        button.addEventListener('click', function(event) {
-            event.preventDefault();
-            window.location.href = this.getAttribute('href');
-        });
+document.querySelectorAll('a.scroll-btn').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href').substring(1);
+        document.getElementById(targetId).scrollIntoView({ behavior: 'smooth' });
     });
 });
