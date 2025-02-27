@@ -1,6 +1,6 @@
 /* Global Styles */
 body {
-    font-family: Georgia, regular;
+    font-family: Helvetica, sans-serif;
     text-align: center;
     background: url('assets/images/bg-main.jpg') no-repeat center center fixed;
     background-size: cover;
@@ -14,7 +14,7 @@ nav {
     position: fixed;
     top: 0;
     width: 100%;
-    background: rgba(139, 2, 29, 0.9);
+    background: rgba(105, 3, 23, 0.9);
     padding: 10px 0;
     z-index: 1000;
 }
@@ -25,11 +25,6 @@ nav a {
     padding: 10px 20px;
     font-weight: bold;
     transition: 0.3s;
-}
-
-nav a:hover {
-    background: #d29495;
-    border-radius: 5px;
 }
 
 /* Sections */
@@ -59,12 +54,12 @@ section {
 }
 
 a {
-    color: grey;
-    text-decoration: none;
+    color: rgb(184, 183, 183);
+    text-decoration: bold;
 }
 
 a:hover {
-    color: lightgrey;
+    color: rgb(228, 226, 226);
     text-decoration: underline;
 }
 
