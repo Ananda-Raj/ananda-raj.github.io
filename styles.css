@@ -1,38 +1,45 @@
 /* Work Section */
 .work-item {
     display: flex;
-    align-items: flex-start; /* Align items to the top */
+    align-items: center;
     justify-content: center;
-    max-width: 600px;
+    max-width: 600px; /* Adjust width of the container */
     margin: 20px auto;
-    gap: 15px;
+    gap: 15px; /* Space between image and text */
 }
 
 /* Work Image */
 .work-image {
-    width: 5cm; /* Fixed width */
-    height: auto;
+    width: 5cm; /* Set exact width */
+    height: auto; /* Maintain aspect ratio */
     border-radius: 8px;
 }
 
 /* Work Text */
 .work-text {
-    flex: 1; /* Ensures uniform width */
-    max-width: 300px; /* Prevents text blocks from shrinking */
+    max-width: 30cm; /* Limit text width */
     text-align: left;
-    min-height: 80px; /* Set a minimum height for text block */
-    display: flex;
-    flex-direction: column;
-    justify-content: center; /* Ensures all texts are centered vertically */
 }
 
-/* Ensure text remains aligned properly */
+/* Adjust text to avoid long lines */
 .work-text p {
     font-size: 16px;
-    line-height: 1.4;
+    line-height: 1.4; /* Increase spacing between lines */
     margin: 0;
-    padding: 0;
-    word-wrap: break-word;
+}
+
+/* Read More Link */
+.work-text a {
+    display: inline-block;
+    margin-top: 10px;
+    font-weight: bold;
+    color: grey;
+    text-decoration: none;
+}
+
+.work-text a:hover {
+    color: lightgrey;
+    text-decoration: underline;
 }
 
 /* Global Styles */
