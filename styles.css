@@ -3,7 +3,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    max-width: 500px; /* Adjust width of the container */
+    max-width: 600px; /* Adjust width of the container */
     margin: 40px auto;
     gap: 15px; /* Space between image and text */
 }
