@@ -4,7 +4,7 @@
     align-items: center;
     justify-content: center;
     max-width: 500px; /* Adjust width of the container */
-    margin: 30px auto;
+    margin: 40px auto;
     gap: 15px; /* Space between image and text */
 }
 
@@ -17,7 +17,7 @@
 
 /* Work Text */
 .work-text {
-    max-width: 20cm; /* Limit text width */
+    max-width: 30cm; /* Limit text width */
     text-align: left;
 }
 
