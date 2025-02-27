@@ -1,7 +1,7 @@
 /* Work Section */
 .work-item {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     max-width: 700px; /* Adjust width of the container */
     margin: 20px auto;
@@ -19,6 +19,7 @@
 .work-text {
     max-width: 30cm; /* Limit text width */
     text-align: left;
+    align-self: stretch;
 }
 
 /* Adjust text to avoid long lines */
@@ -68,7 +69,7 @@ body {
     font-family: 'Merriweather', serif; /* More readable font */
     letter-spacing: 0.5px; /* Add slight spacing between letters */
     line-height: 1.6; /* Increase line spacing */
-/*    text-align: center; */
+    text-align: center;
     background: url('assets/images/bg-main.jpg') no-repeat center center fixed;
     background-size: cover;
     color: #fcfcfc;
@@ -129,6 +130,7 @@ section {
     }
 
     .work-text {
+        min-width: 400px;
         max-width: 100%; /* Allow text to fit screen */
         text-align: center;
     }
