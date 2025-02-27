@@ -1,9 +1,9 @@
 /* Work Section */
 .work-item {
     display: flex;
-    align-items: flex-start;
-    justify-content: flex-start;
-    max-width: 500px; /* Adjust width of the container */
+    align-items: center;
+    justify-content: center;
+    max-width: 600px; /* Adjust width of the container */
     margin: 20px auto;
     gap: 15px; /* Space between image and text */
 }
@@ -19,7 +19,6 @@
 .work-text {
     max-width: 30cm; /* Limit text width */
     text-align: left;
-    align-self: stretch;
 }
 
 /* Adjust text to avoid long lines */
@@ -130,7 +129,6 @@ section {
     }
 
     .work-text {
-        min-width: 400px;
         max-width: 100%; /* Allow text to fit screen */
         text-align: center;
     }
