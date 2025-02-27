@@ -1,3 +1,30 @@
+.work-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 600px; /* Keep the same width */
+    margin: 20px auto;
+    gap: 15px; /* Keep uniform gap */
+    flex-wrap: wrap; /* Prevent layout breaking */
+}
+
+/* Fix any inconsistent spacing by ensuring no extra padding */
+.work-text p,
+.work-text a {
+    font-size: 16px;
+    line-height: 1.4;
+    margin: 0; /* Remove unwanted margins */
+    padding: 0; /* Remove padding inconsistencies */
+    word-wrap: break-word;
+}
+
+/* Fixes spacing issues by ensuring a consistent flex-basis */
+.work-item img,
+.work-text {
+    flex: 1; /* Ensures equal width distribution */
+    min-width: 200px; /* Prevents overflow */
+}
+
 /* Global Styles */
 body {
     font-family: 'Merriweather', serif; /* More readable font */
@@ -55,13 +82,6 @@ section {
     }
 }
 
-/* Contact Section */
-#contact img {
-    width: 150px;
-    margin-top: 20px;
-}
-
-/* Hyperlink Styles */
 a {
     color: rgb(184, 183, 183);
     text-decoration: none;
@@ -72,68 +92,8 @@ a:hover {
     text-decoration: none;
 }
 
-/* --- FIXED WORK SECTION --- */
-
-/* Work Section */
-#works {
-    text-align: center;
-}
-
-.work-item {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start; /* Align all items to the left */
-    max-width: 500px; /* Keep a fixed width for all items */
-    margin: 20px auto;
-    gap: 15px; /* Ensure equal spacing */
-}
-
-/* Work Image */
-.work-image {
-    width: 5cm; /* Fixed width */
-    height: 5cm; /* Set fixed height for uniformity */
-    object-fit: cover; /* Ensures images maintain their aspect ratio */
-    border-radius: 8px;
-}
-
-/* Work Text */
-.work-text {
-    max-width: 15cm; /* Reduce width to keep alignment proper */
-    text-align: left;
-}
-
-/* Adjust text for better readability */
-.work-text p {
-    font-size: 16px;
-    line-height: 1.4;
-    margin: 0;
-    word-wrap: break-word;
-}
-
-/* Read More Link */
-.work-text a {
-    display: inline-block;
-    margin-top: 5px;
-    font-weight: bold;
-    color: grey;
-    text-decoration: none;
-}
-
-.work-text a:hover {
-    color: lightgrey;
-    text-decoration: underline;
-}
-
-/* Ensure uniformity for different screen sizes */
-@media (max-width: 768px) {
-    .work-item {
-        flex-direction: column; /* Stack items vertically on small screens */
-        align-items: center;
-        text-align: center;
-    }
-
-    .work-text {
-        max-width: 90%;
-        text-align: center;
-    }
+/* Contact Section */
+#contact img {
+    width: 150px;
+    margin-top: 20px;
 }
