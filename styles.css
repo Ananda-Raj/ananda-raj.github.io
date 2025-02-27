@@ -55,12 +55,12 @@ section {
 
 a {
     color: rgb(184, 183, 183);
-    text-decoration: bold;
+    text-decoration: none;
 }
 
 a:hover {
     color: rgb(228, 226, 226);
-    text-decoration: underline;
+    text-decoration: none;
 }
 
 /* Contact Section */
