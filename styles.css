@@ -1,6 +1,52 @@
+/* Work Section */
+.work-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 500px; /* Adjust width of the container */
+    margin: 20px auto;
+    gap: 15px; /* Space between image and text */
+}
+
+/* Work Image */
+.work-image {
+    width: 5cm; /* Set exact width */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 8px;
+}
+
+/* Work Text */
+.work-text {
+    max-width: 5cm; /* Limit text width */
+    text-align: left;
+}
+
+/* Adjust text to avoid long lines */
+.work-text p {
+    font-size: 16px;
+    line-height: 1.4; /* Increase spacing between lines */
+    margin: 0;
+}
+
+/* Read More Link */
+.work-text a {
+    display: inline-block;
+    margin-top: 5px;
+    font-weight: bold;
+    color: grey;
+    text-decoration: none;
+}
+
+.work-text a:hover {
+    color: lightgrey;
+    text-decoration: underline;
+}
+
 /* Global Styles */
 body {
-    font-family: Helvetica, sans-serif;
+    font-family: 'Merriweather', serif; /* More readable font */
+    letter-spacing: 0.5px; /* Add slight spacing between letters */
+    line-height: 1.6; /* Increase line spacing */
     text-align: center;
     background: url('assets/images/bg-main.jpg') no-repeat center center fixed;
     background-size: cover;
