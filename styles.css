@@ -112,6 +112,21 @@ section {
     object-fit: cover;
 }
 
+a {
+    color: rgb(184, 183, 183);
+    text-decoration: none;
+}
+
+a:hover {
+    color: rgb(228, 226, 226);
+    text-decoration: none;
+}
+
+#contact img {
+    width: 150px;
+    margin-top: 20px;
+}
+
 /* Responsive Image */
 /* Responsive Styles for Smaller Screens */
 /*
