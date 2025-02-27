@@ -73,7 +73,7 @@ body {
     background-size: cover;
     color: #fcfcfc;
     margin: 0;
-    padding-top: 60px;
+    padding: 0;
 }
 
 /* Navigation Bar */
@@ -82,7 +82,7 @@ nav {
     top: 0;
     width: 100%;
     background: rgba(105, 3, 23, 0.9);
-    padding: 15px 0; /* Slightly increase padding */
+    padding: 10px 0; /* Slightly increase padding */
     z-index: 1000;
 }
 
@@ -115,26 +115,26 @@ section {
 /* Responsive Image */
 /* Responsive Styles for Smaller Screens */
 @media (max-width: 768px) {
-    .work-item {
-        flex-direction: column; /* Stack image and text vertically */
+/*    .work-item {
+        flex-direction: column;
         align-items: center;
         text-align: center;
-        max-width: 80%; /* Adjust width to fit the screen */
-        margin: 30px auto; /* Keep consistent spacing */
+        max-width: 80%;
+        margin: 30px auto;
     }
 
     .work-image {
-        width: 4cm; /* Slightly increase image size on mobile */
-        margin-bottom: 10px; /* Space between image and text */
+        width: 4cm;
+        margin-bottom: 10px;
     }
 
     .work-text {
-        max-width: 100%; /* Allow text to fit screen */
+        max-width: 100%;
         text-align: center;
     }
 
     .work-title {
-        font-size: 14px; /* Slightly reduce heading size for better fit */
+        font-size: 14px;
     }
 
     .work-description {
@@ -144,7 +144,7 @@ section {
     .work-date {
         font-size: 11px;
     }
-
+*/
     section {
         min-height: auto;
         padding: 40px 20px;
@@ -160,7 +160,6 @@ a:hover {
     text-decoration: none;
 }
 
-/* Contact Section */
 #contact img {
     width: 150px;
     margin-top: 20px;
