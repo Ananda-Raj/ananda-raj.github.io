@@ -1,30 +1,35 @@
+/* Work Section */
 .work-item {
     display: flex;
-    align-items: center;
+    align-items: flex-start; /* Aligns items to the top */
     justify-content: center;
-    max-width: 600px; /* Keep the same width */
+    max-width: 600px;
     margin: 20px auto;
-    gap: 15px; /* Keep uniform gap */
-    flex-wrap: wrap; /* Prevent layout breaking */
+    gap: 15px;
 }
 
-/* Fix any inconsistent spacing by ensuring no extra padding */
-.work-text p,
-.work-text a {
+/* Work Image */
+.work-image {
+    width: 5cm; /* Fixed width */
+    height: auto;
+    border-radius: 8px;
+}
+
+/* Work Text */
+.work-text {
+    flex: 1; /* Ensures uniform width */
+    max-width: 300px; /* Prevents excessive width */
+    text-align: left;
+}
+
+/* Ensure text remains aligned properly */
+.work-text p {
     font-size: 16px;
-    line-height: 1.4;
-    margin: 0; /* Remove unwanted margins */
-    padding: 0; /* Remove padding inconsistencies */
+    line-height: 1.4; /* Ensures proper spacing */
+    margin: 0;
+    padding: 0;
     word-wrap: break-word;
 }
-
-/* Fixes spacing issues by ensuring a consistent flex-basis */
-.work-item img,
-.work-text {
-    flex: 1; /* Ensures equal width distribution */
-    min-width: 200px; /* Prevents overflow */
-}
-
 /* Global Styles */
 body {
     font-family: 'Merriweather', serif; /* More readable font */
