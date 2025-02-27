@@ -3,14 +3,14 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    max-width: 500px; /* Adjust width of the container */
-    margin: 20px auto;
+    max-width: 600px; /* Adjust width of the container */
+    margin: 30px auto;
     gap: 15px; /* Space between image and text */
 }
 
 /* Work Image */
 .work-image {
-    width: 10cm; /* Set exact width */
+    width: 7cm; /* Set exact width */
     height: auto; /* Maintain aspect ratio */
     border-radius: 8px;
 }
