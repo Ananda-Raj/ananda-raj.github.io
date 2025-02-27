@@ -103,7 +103,6 @@ section {
     align-items: flex-start; /* Instead of center */
     justify-content: center;
     padding: 50px;
-    width: 100%; /* Ensure it spans full width */
 }
 
 /* Profile Image */
