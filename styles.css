@@ -1,38 +1,48 @@
+/* Global Styles */
 body {
     font-family: Arial, sans-serif;
     text-align: center;
     background: url('assets/images/bg-main.jpg') no-repeat center center fixed;
     background-size: cover;
-    color: white; /* Change text color to white */
+    color: #fcfcfc;
     margin: 0;
     padding: 0;
 }
 
-header {
-    background: #751d25;
-    color: white;
-    padding: 50px 20px;
+/* Navigation Bar */
+nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: rgba(139, 2, 29, 0.9);
+    padding: 10px 0;
+    z-index: 1000;
 }
 
-.scroll-btn {
-    display: inline-block;
-    padding: 10px 20px;
-    background: #751d25;
+nav a {
     color: white;
     text-decoration: none;
-    border-radius: 5px;
+    padding: 10px 20px;
+    font-weight: bold;
     transition: 0.3s;
 }
 
-.scroll-btn:hover {
-    background: #cf6c6c;
+nav a:hover {
+    background: #d29495;
+    border-radius: 5px;
 }
 
-.contact img {
-    width: 150px;
-    margin-top: 20px;
+/* Sections */
+section {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 50px;
 }
 
+/* Profile Image */
 .profile img {
     width: 150px;
     height: 150px;
@@ -40,15 +50,16 @@ header {
     object-fit: cover;
 }
 
-/* Ensure headings and paragraphs are also white */
-.profile h1, 
-.profile p {
-    color: white; 
-}
-
+/* Responsive Image */
 @media (max-width: 768px) {
     .profile img {
         width: 120px;
         height: 120px;
     }
+}
+
+/* Contact Section */
+#contact img {
+    width: 150px;
+    margin-top: 20px;
 }
