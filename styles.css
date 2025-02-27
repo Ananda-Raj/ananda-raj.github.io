@@ -3,7 +3,7 @@
     display: flex;
     align-items: flex-start; /* Aligns items to the top */
     justify-content: center;
-    max-width: 600px;
+    max-width: 700px;
     margin: 20px auto;
     gap: 15px;
 }
@@ -18,7 +18,7 @@
 /* Work Text */
 .work-text {
     flex: 1; /* Ensures uniform width */
-    max-width: 300px; /* Prevents excessive width */
+    max-width: 400px; /* Prevents excessive width */
     text-align: left;
 }
 
