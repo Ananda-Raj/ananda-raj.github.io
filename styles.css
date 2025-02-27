@@ -3,21 +3,21 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    max-width: 600px; /* Adjust width of the container */
+    max-width: 500px; /* Adjust width of the container */
     margin: 30px auto;
     gap: 15px; /* Space between image and text */
 }
 
 /* Work Image */
 .work-image {
-    width: 7cm; /* Set exact width */
+    width: 5cm; /* Set exact width */
     height: auto; /* Maintain aspect ratio */
     border-radius: 8px;
 }
 
 /* Work Text */
 .work-text {
-    max-width: 10cm; /* Limit text width */
+    max-width: 20cm; /* Limit text width */
     text-align: left;
 }
 
