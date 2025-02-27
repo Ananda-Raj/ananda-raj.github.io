@@ -3,7 +3,7 @@
     display: flex;
     align-items: flex-start;
     justify-content: flex-start;
-    max-width: 700px; /* Adjust width of the container */
+    max-width: 500px; /* Adjust width of the container */
     margin: 20px auto;
     gap: 15px; /* Space between image and text */
 }
