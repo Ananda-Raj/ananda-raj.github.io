@@ -10,14 +10,14 @@
 
 /* Work Image */
 .work-image {
-    width: 5cm; /* Set exact width */
+    width: 10cm; /* Set exact width */
     height: auto; /* Maintain aspect ratio */
     border-radius: 8px;
 }
 
 /* Work Text */
 .work-text {
-    max-width: 5cm; /* Limit text width */
+    max-width: 10cm; /* Limit text width */
     text-align: left;
 }
 
@@ -31,7 +31,7 @@
 /* Read More Link */
 .work-text a {
     display: inline-block;
-    margin-top: 5px;
+    margin-top: 10px;
     font-weight: bold;
     color: grey;
     text-decoration: none;
