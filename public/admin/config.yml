@@ -1,0 +1,189 @@
+# yaml-language-server: $schema=https://unpkg.com/@sveltia/cms@0.250.2/schema/sveltia-cms.json
+backend:
+  name: github
+  repo: Ananda-Raj/ananda-raj.github.io
+  branch: master
+
+site_url: https://ananda-raj.github.io
+display_url: https://ananda-raj.github.io
+media_folder: public/uploads
+public_folder: /uploads
+output:
+  omit_empty_optional_fields: true
+
+singletons:
+  - name: profile
+    label: Profile
+    icon: person
+    file: src/data/profile.yaml
+    fields:
+      - { name: name, label: Full name }
+      - { name: role, label: Job title }
+      - { name: company, label: Current company, hint: Short name shown in the hero, e.g. Qubryx }
+      - { name: location, label: Location }
+      - name: phone
+        label: Phone
+        required: false
+        hint: International format without spaces, e.g. +918129524634. Leave empty to hide it everywhere.
+        pattern: ['^\+\d{8,15}$', 'Use + and digits only, e.g. +918129524634']
+      - name: careerStart
+        label: Career start (YYYY-MM)
+        hint: Years of experience are counted from this month.
+        pattern: ['^\d{4}-\d{2}$', 'Use YYYY-MM, e.g. 2018-05']
+      - { name: email, label: Email, type: email }
+      - { name: site, label: Website URL, type: url }
+      - name: links
+        label: Links
+        widget: object
+        fields:
+          - { name: linkedin, label: LinkedIn, type: url }
+          - { name: github, label: GitHub, type: url }
+          - { name: medium, label: Medium, type: url, hint: Posts are pulled from this profile automatically. }
+      - { name: focus, label: Focus areas, widget: list, hint: Shown as tags in the hero. }
+      - { name: tagline, label: Tagline, widget: text }
+      - name: contact
+        label: Contact section
+        widget: object
+        fields:
+          - { name: heading, label: Heading }
+          - { name: text, label: Text, widget: text }
+      - name: about
+        label: About paragraphs
+        widget: list
+        label_singular: Paragraph
+        field: { name: paragraph, label: Paragraph, widget: text }
+      - { name: offWork, label: Away from work, widget: text }
+      - name: summary
+        label: CV summary
+        widget: text
+        hint: '{years} is replaced with your years of experience, e.g. 8+.'
+      - name: languages
+        label: Languages
+        widget: list
+        summary: '{{name}} ({{level}})'
+        fields:
+          - { name: name, label: Language }
+          - { name: level, label: Level }
+
+  - name: experience
+    label: Experience
+    icon: work
+    file: src/data/experience.yaml
+    fields:
+      - name: companies
+        label: Companies
+        label_singular: Company
+        widget: list
+        root: true
+        summary: '{{company}}'
+        hint: Newest first.
+        fields:
+          - { name: company, label: Company }
+          - { name: location, label: Location, required: false }
+          - name: draft
+            label: Placeholder text
+            widget: boolean
+            required: false
+            default: false
+            hint: While this is on, the live site won't publish. Use it for unfinished entries.
+          - name: roles
+            label: Roles
+            label_singular: Role
+            widget: list
+            summary: '{{title}} ({{start}} – {{end}})'
+            hint: Newest first.
+            fields:
+              - { name: title, label: Job title }
+              - name: start
+                label: Start (YYYY-MM)
+                pattern: ['^\d{4}-\d{2}$', 'Use YYYY-MM, e.g. 2023-10']
+              - name: end
+                label: End (YYYY-MM)
+                required: false
+                hint: Leave empty for your current role.
+                pattern: ['^\d{4}-\d{2}$', 'Use YYYY-MM, e.g. 2026-03']
+              - { name: note, label: Sub-line, required: false, hint: Shown under the title, e.g. a role progression or a client. }
+              - name: cvBullets
+                label: Bullets on the CV PDF
+                widget: number
+                value_type: int
+                min: 1
+                required: false
+                hint: The PDF shows only the first N bullets so it stays within 2 pages. Leave empty to show all. The website always shows all.
+              - name: highlights
+                label: Bullet points
+                label_singular: Bullet
+                widget: list
+                required: false
+                field: { name: point, label: Bullet, widget: text }
+
+  - name: skills
+    label: Skills
+    icon: build
+    file: src/data/skills.yaml
+    fields:
+      - name: groups
+        label: Skill groups
+        label_singular: Group
+        widget: list
+        root: true
+        summary: '{{group}}'
+        fields:
+          - { name: group, label: Group name }
+          - { name: items, label: Skills, widget: list }
+
+  - name: credentials
+    label: Certifications & education
+    icon: workspace_premium
+    file: src/data/credentials.yaml
+    fields:
+      - name: certifications
+        label: Certifications
+        label_singular: Certification
+        widget: list
+        summary: '{{name}}'
+        fields:
+          - { name: name, label: Name }
+          - { name: issuer, label: Issuer }
+          - { name: expired, label: Expired, widget: boolean, required: false, default: false }
+          - { name: url, label: Credential link, type: url, required: false }
+      - name: recognition
+        label: Community & recognition
+        label_singular: Item
+        widget: list
+        summary: '{{name}}'
+        fields:
+          - { name: name, label: Name }
+          - { name: issuer, label: Organisation }
+          - { name: since, label: Since (year), widget: number, value_type: int, required: false }
+          - { name: url, label: Link, type: url, required: false }
+      - name: education
+        label: Education
+        widget: list
+        summary: '{{degree}}'
+        fields:
+          - { name: degree, label: Degree }
+          - { name: school, label: School }
+          - { name: start, label: Start year, widget: number, value_type: int }
+          - { name: end, label: End year, widget: number, value_type: int }
+
+  - name: projects
+    label: Projects
+    icon: rocket_launch
+    file: src/data/projects.yaml
+    fields:
+      - name: projects
+        label: Projects
+        label_singular: Project
+        widget: list
+        root: true
+        summary: '{{name}}'
+        hint: Public GitHub repos and Medium posts appear automatically; list your highlighted projects here.
+        fields:
+          - { name: name, label: Name }
+          - { name: show, label: Show on site, widget: boolean, required: false, default: true }
+          - { name: status, label: Status, required: false, hint: e.g. In development, Live, Open source }
+          - { name: summary, label: Summary, widget: text }
+          - { name: tech, label: Tech, widget: list, required: false }
+          - { name: url, label: Website, type: url, required: false }
+          - { name: repo, label: Source code, type: url, required: false }
