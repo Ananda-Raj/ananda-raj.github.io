@@ -1,0 +1,403 @@
+---
+import { profile, experience, skills, projects, years, cvFile, phoneDisplay } from '../lib/content';
+import { getPosts, getRepos } from '../lib/feeds';
+import { monthYear } from '../lib/dates';
+
+type Seg = string | { t: string; href?: string; c?: string };
+type Line = Seg[];
+
+const hl = (t: string): Seg => ({ t, c: 'hl' });
+const dim = (t: string): Seg => ({ t, c: 'dim' });
+const link = (t: string, href: string): Seg => ({ t, href });
+
+const posts = (await getPosts()).slice(0, 4);
+const repos = (await getRepos()).slice(0, 4);
+const pad = (s: string, n: number) => s.padEnd(n, ' ');
+
+const commands: Record<string, { desc: string; out: Line[] }> = {
+  whoami: {
+    desc: 'who is this?',
+    out: [[hl(profile.name), ` · ${profile.role} at ${profile.company}`], [dim(`${profile.location} · ${years}+ years running production on AWS`)]],
+  },
+  focus: { desc: 'what I work on', out: [[profile.focus.join(' · ')]] },
+  about: { desc: 'a short intro', out: profile.about.slice(0, 3).map((p) => [p]) },
+  skills: { desc: 'tools I use', out: skills.map((s) => [hl(pad(s.group, 24)), s.items.join(', ')]) },
+  experience: {
+    desc: "where I've worked",
+    out: experience.map((e) => {
+      const from = monthYear(e.roles.at(-1)!.start).split(' ')[1];
+      const to = e.roles[0].end ? monthYear(e.roles[0].end).split(' ')[1] : 'now';
+      return [hl(pad(e.company, 34)), pad(e.roles[0].title, 26), dim(`${from}–${to}`)];
+    }),
+  },
+  projects: {
+    desc: "things I've built",
+    out: [
+      ...projects.map((p) => [hl(p.name), ` ${p.summary}`]),
+      ...repos.map((r) => [link(r.name, r.url), dim(r.description ? `  ${r.description}` : '')]),
+      [link('all repositories →', `${profile.links.github}?tab=repositories`)],
+    ],
+  },
+  writing: {
+    desc: 'latest articles',
+    out: [...posts.map((p) => [link(p.title, p.url)]), [link('more on Medium →', profile.links.medium)]],
+  },
+  contact: {
+    desc: 'say hello',
+    out: [
+      ['email     ', link(profile.email, `mailto:${profile.email}`)],
+      ...(profile.phone ? [['phone     ', link(phoneDisplay!, `tel:${profile.phone}`)]] : []),
+      ['linkedin  ', link(profile.links.linkedin.replace('https://www.', ''), profile.links.linkedin)],
+      ['github    ', link(profile.links.github.replace('https://', ''), profile.links.github)],
+    ],
+  },
+  cv: { desc: 'my CV', out: [['web  ', link('/cv/', '/cv/')], ['pdf  ', link(cvFile, `/${cvFile}`)]] },
+  clear: { desc: 'clear the screen', out: [] },
+};
+
+const data = { commands, years, prompt: 'ananda@kochi:~$' };
+const intro = ['whoami', 'focus'];
+const chips = ['help', 'skills', 'experience', 'writing', 'contact'];
+---
+
+<div class="term" data-term>
+  <div class="term-bar">
+    <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+    <span class="term-title">ananda@kochi: ~</span>
+  </div>
+  <div class="term-body" data-scroll>
+    <div class="term-out" data-out aria-live="polite">
+      {
+        intro.map((c) => (
+          <Fragment>
+            <div class="line"><span class="prompt">{data.prompt}</span>{` ${c}`}</div>
+            {commands[c].out.map((line) => (
+              <div class="line">{line.map((s) => (typeof s === 'string' ? s : s.href ? <a href={s.href}>{s.t}</a> : <span class={s.c}>{s.t}</span>))}</div>
+            ))}
+          </Fragment>
+        ))
+      }
+      <div class="line dim">Type <span class="hl">help</span> or tap a command below.</div>
+    </div>
+    <form class="term-input" data-form autocomplete="off">
+      <label for="term-cmd" class="prompt">{data.prompt}</label>
+      <input id="term-cmd" name="cmd" type="text" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="go" aria-label="Terminal command" />
+    </form>
+  </div>
+  <div class="term-chips">
+    {chips.map((c) => <button type="button" data-cmd={c}>{c}</button>)}
+  </div>
+  <script type="application/json" set:html={JSON.stringify(data)} />
+</div>
+
+<script>
+  type Seg = string | { t: string; href?: string; c?: string };
+  type Line = Seg[];
+
+  const root = document.querySelector<HTMLElement>('[data-term]')!;
+  const data = JSON.parse(root.querySelector('script[type="application/json"]')!.textContent!);
+  const cmds: Record<string, { desc: string; out: Line[] }> = data.commands;
+  const out = root.querySelector<HTMLElement>('[data-out]')!;
+  const scroller = root.querySelector<HTMLElement>('[data-scroll]')!;
+  const toEnd = () => (scroller.scrollTop = scroller.scrollHeight);
+  const form = root.querySelector<HTMLFormElement>('[data-form]')!;
+  const input = form.querySelector('input')!;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const history: string[] = [];
+  let pos = 0;
+  let busy = false;
+
+  const files: Record<string, string> = {
+    'about.md': 'about',
+    'focus.txt': 'focus',
+    'skills.yaml': 'skills',
+    'experience.log': 'experience',
+    'contact.txt': 'contact',
+    'cv.pdf': 'cv',
+  };
+  const aliases: Record<string, string> = { resume: 'cv', exp: 'experience', blog: 'writing', posts: 'writing', work: 'projects', hello: 'contact', hi: 'contact' };
+
+  function line(segs: Seg[], cls = '') {
+    const div = document.createElement('div');
+    div.className = `line ${cls}`.trim();
+    for (const s of segs) {
+      if (typeof s === 'string') {
+        div.append(s);
+        continue;
+      }
+      const el = document.createElement(s.href ? 'a' : 'span');
+      el.textContent = s.t;
+      if (s.c) el.className = s.c;
+      if (el instanceof HTMLAnchorElement && s.href) {
+        el.href = s.href;
+        if (/^https?:/.test(s.href)) {
+          el.target = '_blank';
+          el.rel = 'noopener';
+        }
+      }
+      div.append(el);
+    }
+    out.append(div);
+    toEnd();
+    return div;
+  }
+
+  const say = (...lines: Line[]) => lines.forEach((l) => line(l));
+  const hl = (t: string) => ({ t, c: 'hl' });
+  const dim = (t: string) => ({ t, c: 'dim' });
+
+  function respond(raw: string) {
+    const [name = '', ...args] = raw.trim().split(/\s+/);
+    const cmd = aliases[name.toLowerCase()] ?? name.toLowerCase();
+    const arg = args.join(' ');
+
+    if (cmd === 'clear') return out.replaceChildren();
+    if (cmd === 'help') {
+      return say(
+        ...Object.entries(cmds).map(([k, v]) => [hl(k.padEnd(12)), dim(v.desc)]),
+        [dim('There are a few hidden ones too.')],
+      );
+    }
+    if (cmds[cmd]) return say(...cmds[cmd].out);
+
+    switch (cmd) {
+      case 'ls':
+        return say([Object.keys(files).join('  ')]);
+      case 'cat':
+      case 'less':
+      case 'more':
+        if (files[arg]) return say(...cmds[files[arg]].out);
+        return say([`cat: ${arg || '(nothing)'}: No such file. Try `, hl('ls')]);
+      case 'sudo':
+        return say(['Nice try. My inbox is open though, type ', hl('contact'), '.']);
+      case 'kubectl':
+        if (arg === 'get skills') return say(...cmds.skills.out);
+        if (arg === 'get pods') return say([dim('NAME            READY   STATUS    AGE')], [`ananda-0        1/1     Running   ${data.years}y`]);
+        return say(['Try ', hl('kubectl get skills'), ' or ', hl('kubectl get pods')]);
+      case 'terraform':
+        if (arg === 'plan') return say(['Plan: ', hl('1 to add'), ' (a new connection), 0 to change, 0 to destroy.'], [dim('Run `contact` to apply.')]);
+        if (arg === 'apply') return say(["Applies are manual around here. Run ", hl('contact'), ' instead.']);
+        return say(['Try ', hl('terraform plan')]);
+      case 'uptime':
+        return say([`up ${data.years} years, load average: AWS, Kubernetes, Terraform`]);
+      case 'pwd':
+        return say(['/home/ananda']);
+      case 'date':
+        return say([new Date().toString()]);
+      case 'echo':
+        return say([arg]);
+      case 'exit':
+        return say(['Thanks for stopping by. The tab stays open though.']);
+      default:
+        return say([`command not found: ${name}. Type `, hl('help'), '.']);
+    }
+  }
+
+  function prompt(cmd: string) {
+    const div = line([{ t: data.prompt, c: 'prompt' }, ' ']);
+    div.append(cmd);
+    return div;
+  }
+
+  function run(raw: string) {
+    const cmd = raw.trim();
+    prompt(cmd);
+    if (cmd) {
+      history.push(cmd);
+      pos = history.length;
+      respond(cmd);
+    }
+    toEnd();
+  }
+
+  const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+  async function typeAndRun(cmd: string) {
+    const div = prompt('');
+    for (const ch of cmd) {
+      div.append(ch);
+      toEnd();
+      await sleep(55 + Math.random() * 40);
+    }
+    await sleep(250);
+    div.remove();
+    run(cmd);
+  }
+
+  async function intro() {
+    if (reduce) return;
+    busy = true;
+    out.replaceChildren();
+    await sleep(500);
+    for (const c of ['whoami', 'focus']) {
+      await typeAndRun(c);
+      await sleep(450);
+    }
+    line(['Type ', hl('help'), ' or tap a command below.'], 'dim');
+    busy = false;
+  }
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (busy) return;
+    run(input.value);
+    input.value = '';
+  });
+
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowUp' && pos > 0) {
+      input.value = history[--pos];
+      e.preventDefault();
+    } else if (e.key === 'ArrowDown') {
+      pos = Math.min(pos + 1, history.length);
+      input.value = history[pos] ?? '';
+      e.preventDefault();
+    } else if (e.key === 'Tab' && input.value) {
+      const match = [...Object.keys(cmds), 'help', 'ls', 'cat'].find((k) => k.startsWith(input.value.toLowerCase()));
+      if (match) {
+        input.value = match;
+        e.preventDefault();
+      }
+    }
+  });
+
+  root.querySelectorAll<HTMLButtonElement>('[data-cmd]').forEach((b) =>
+    b.addEventListener('click', async () => {
+      if (busy) return;
+      busy = true;
+      await (reduce ? Promise.resolve(run(b.dataset.cmd!)) : typeAndRun(b.dataset.cmd!));
+      busy = false;
+    }),
+  );
+
+  root.querySelector('.term-body')!.addEventListener('click', (e) => {
+    if (!(e.target as HTMLElement).closest('a') && !getSelection()?.toString()) input.focus({ preventScroll: true });
+  });
+
+  intro();
+</script>
+
+<style>
+  .term {
+    background: rgba(9, 11, 16, 0.82);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius);
+    box-shadow:
+      0 30px 80px -30px rgba(0, 0, 0, 0.8),
+      0 0 0 1px rgba(255, 255, 255, 0.02) inset;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    font-family: var(--mono);
+    font-size: 0.86rem;
+    line-height: 1.6;
+    overflow: hidden;
+    min-width: 0;
+  }
+  .term-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(255, 255, 255, 0.02);
+  }
+  .dots {
+    display: flex;
+    gap: 6px;
+  }
+  .dots i {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: #3a4152;
+  }
+  .dots i:first-child {
+    background: var(--accent);
+  }
+  .dots i:nth-child(2) {
+    background: #e7b04f;
+  }
+  .dots i:nth-child(3) {
+    background: #4fbf75;
+  }
+  .term-title {
+    color: var(--muted);
+    font-size: 0.78rem;
+  }
+  .term-body {
+    height: 300px;
+    padding: 14px 16px 12px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-strong) transparent;
+    cursor: text;
+  }
+  .term-out :global(.line) {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    color: var(--text-2);
+    min-height: 1.6em;
+  }
+  .term :global(.prompt) {
+    color: var(--ok);
+  }
+  .term :global(.hl) {
+    color: var(--accent-2);
+  }
+  .term :global(.dim) {
+    color: var(--muted);
+  }
+  .term-out :global(a) {
+    color: var(--text);
+  }
+  .term-input {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .term-input label {
+    flex: none;
+  }
+  .term-input input {
+    flex: 1;
+    min-width: 0;
+    background: transparent;
+    border: 0;
+    color: var(--text);
+    font: inherit;
+    caret-color: var(--accent-2);
+    padding: 2px 0;
+  }
+  .term-input input:focus {
+    outline: none;
+  }
+  .term-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 10px 14px 14px;
+    border-top: 1px solid var(--border);
+  }
+  .term-chips button {
+    font: inherit;
+    font-size: 0.78rem;
+    color: var(--text-2);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 4px 10px;
+    cursor: pointer;
+  }
+  .term-chips button:hover {
+    color: var(--text);
+    border-color: var(--accent);
+  }
+  @media (max-width: 520px) {
+    .term {
+      font-size: 0.78rem;
+    }
+    .term-body {
+      height: 260px;
+    }
+  }
+</style>

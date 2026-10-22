@@ -1,0 +1,94 @@
+---
+import Icon from './Icon.astro';
+import { profile } from '../lib/content';
+import { getPosts } from '../lib/feeds';
+import { shortDate } from '../lib/dates';
+
+const posts = (await getPosts()).slice(0, 6);
+---
+
+{
+  posts.length > 0 && (
+    <section id="writing" class="section">
+      <div class="wrap">
+        <p class="kicker">// writing</p>
+        <h2>Notes from the field</h2>
+        <div class="posts">
+          {posts.map((p) => (
+            <a class="card post" href={p.url} target="_blank" rel="noopener">
+              {p.image ? <img src={p.image} alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" /> : <div class="ph"><span>{p.tags[0] ?? 'medium'}</span></div>}
+              <div class="body">
+                <time datetime={p.date}>{shortDate(new Date(p.date))}</time>
+                <h3>{p.title}</h3>
+                <p>{p.excerpt}</p>
+              </div>
+            </a>
+          ))}
+        </div>
+        <a class="more" href={profile.links.medium} target="_blank" rel="noopener">
+          All posts on Medium <Icon name="arrow" size={14} />
+        </a>
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .posts {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+    gap: 16px;
+  }
+  .post {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  img,
+  .ph {
+    width: 100%;
+    aspect-ratio: 16 / 8;
+    object-fit: cover;
+    background: linear-gradient(135deg, var(--surface-2), #2a1d24);
+    border-bottom: 1px solid var(--border);
+  }
+  .ph {
+    display: grid;
+    place-items: center;
+    font-family: var(--mono);
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+  .body {
+    padding: 18px 20px 20px;
+  }
+  time {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+  h3 {
+    font-size: 1.05rem;
+    font-weight: 640;
+    margin: 6px 0 8px;
+    line-height: 1.35;
+  }
+  .body p {
+    color: var(--text-2);
+    font-size: 0.9rem;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .more {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 18px;
+    font-weight: 600;
+    text-decoration: none;
+    color: var(--text-2);
+  }
+</style>

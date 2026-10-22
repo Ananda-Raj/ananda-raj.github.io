@@ -1,0 +1,137 @@
+---
+import { experience } from '../lib/content';
+import { range, duration } from '../lib/dates';
+---
+
+<section id="experience" class="section">
+  <div class="wrap">
+    <p class="kicker">// experience</p>
+    <h2>Where I've worked</h2>
+    <ol class="companies">
+      {
+        experience.map((e) => (
+          <li class="card company">
+            <header>
+              <h3>
+                {e.company} {e.draft && <span class="draft-badge">draft</span>}
+              </h3>
+              <p class="meta">
+                {e.location && <span>{e.location}</span>}
+                <span>{duration(e.roles.at(-1)!.start, e.roles[0].end)}</span>
+              </p>
+            </header>
+            <ol class="roles">
+              {e.roles.map((r) => (
+                <li>
+                  <div class="role-head">
+                    <h4>{r.title}</h4>
+                    <span class="dates">{range(r.start, r.end)}</span>
+                  </div>
+                  {r.note && <p class="client">{r.note}</p>}
+                  {r.highlights.length > 0 && (
+                    <ul>
+                      {r.highlights.map((h) => (
+                        <li>{h}</li>
+                      ))}
+                    </ul>
+                  )}
+                </li>
+              ))}
+            </ol>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .companies {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 20px;
+  }
+  .company {
+    padding: clamp(20px, 3vw, 30px);
+  }
+  header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 6px 16px;
+    margin-bottom: 18px;
+  }
+  h3 {
+    font-size: 1.35rem;
+  }
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 14px;
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.88rem;
+  }
+  .roles {
+    list-style: none;
+    margin: 0;
+    padding: 0 0 0 20px;
+    border-left: 2px solid var(--border);
+    display: grid;
+    gap: 18px;
+  }
+  .roles > li {
+    position: relative;
+  }
+  .roles > li::before {
+    content: '';
+    position: absolute;
+    left: -27px;
+    top: 7px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 2px solid var(--border-strong);
+  }
+  .roles > li:first-child::before {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+  }
+  .role-head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 2px 16px;
+  }
+  h4 {
+    margin: 0;
+    font-size: 1.02rem;
+    font-weight: 620;
+  }
+  .dates {
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  .client {
+    color: var(--muted);
+    font-size: 0.9rem;
+    margin: 2px 0 0;
+  }
+  ul {
+    margin: 8px 0 0;
+    padding-left: 18px;
+    color: var(--text-2);
+  }
+  ul li {
+    margin-bottom: 4px;
+  }
+  ul li::marker {
+    color: var(--accent);
+  }
+</style>

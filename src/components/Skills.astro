@@ -1,0 +1,43 @@
+---
+import { skills } from '../lib/content';
+---
+
+<section id="skills" class="section">
+  <div class="wrap">
+    <p class="kicker">// skills</p>
+    <h2>Tools I work with</h2>
+    <div class="grid">
+      {
+        skills.map((s) => (
+          <div class="card group">
+            <h3>{s.group}</h3>
+            <ul class="chips">
+              {s.items.map((i) => (
+                <li class="chip">{i}</li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+    gap: 16px;
+  }
+  .group {
+    padding: 20px;
+  }
+  h3 {
+    font-size: 0.95rem;
+    font-weight: 620;
+    margin-bottom: 12px;
+  }
+  .chip {
+    white-space: normal;
+  }
+</style>

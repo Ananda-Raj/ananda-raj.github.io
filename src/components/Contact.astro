@@ -1,0 +1,51 @@
+---
+import Icon from './Icon.astro';
+import { profile, phoneDisplay } from '../lib/content';
+---
+
+<section id="contact" class="section">
+  <div class="wrap">
+    <div class="panel">
+      <p class="kicker">// contact</p>
+      <h2>{profile.contact.heading}</h2>
+      <p class="text">{profile.contact.text}</p>
+      <div class="actions">
+        <a class="btn btn-primary" href={`mailto:${profile.email}`}><Icon name="mail" /> {profile.email}</a>
+        {profile.phone && <a class="btn btn-ghost" href={`tel:${profile.phone}`}><Icon name="phone" /> {phoneDisplay}</a>}
+        <a class="btn btn-ghost" href={profile.links.linkedin} target="_blank" rel="noopener"><Icon name="linkedin" /> LinkedIn</a>
+        <a class="btn btn-ghost" href={profile.links.github} target="_blank" rel="noopener"><Icon name="github" /> GitHub</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .panel {
+    position: relative;
+    overflow: hidden;
+    padding: clamp(28px, 6vw, 64px);
+    border-radius: 20px;
+    border: 1px solid var(--border-strong);
+    background:
+      radial-gradient(40rem 20rem at 100% 0%, rgba(239, 78, 90, 0.18), transparent 70%),
+      radial-gradient(30rem 20rem at 0% 100%, rgba(255, 143, 107, 0.1), transparent 70%),
+      var(--surface);
+  }
+  h2 {
+    margin-bottom: 16px !important;
+  }
+  .text {
+    color: var(--text-2);
+    max-width: 60ch;
+    font-size: 1.05rem;
+    margin-bottom: 28px;
+  }
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .actions .btn-primary {
+    overflow-wrap: anywhere;
+  }
+</style>

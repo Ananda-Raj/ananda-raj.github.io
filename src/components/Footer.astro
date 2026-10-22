@@ -1,0 +1,42 @@
+---
+import Icon from './Icon.astro';
+import { profile, cvFile } from '../lib/content';
+---
+
+<footer>
+  <div class="wrap inner">
+    <p>© {new Date().getFullYear()} {profile.name}</p>
+    <p class="links">
+      <a href={`/${cvFile}`}><Icon name="download" size={15} /> CV (PDF)</a>
+      <a href="https://github.com/Ananda-Raj/ananda-raj.github.io" target="_blank" rel="noopener">Site source</a>
+    </p>
+  </div>
+</footer>
+
+<style>
+  footer {
+    border-top: 1px solid var(--border);
+    padding-block: 28px;
+    color: var(--muted);
+    font-size: 0.88rem;
+  }
+  .inner {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  p {
+    margin: 0;
+  }
+  .links {
+    display: flex;
+    gap: 20px;
+  }
+  a {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+  }
+</style>

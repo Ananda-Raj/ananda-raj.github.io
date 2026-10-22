@@ -1,0 +1,33 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="Page not found" description="This page doesn't exist." noindex>
+  <main class="wrap nf">
+    <p class="kicker">// 404</p>
+    <h1>Page not found</h1>
+    <p><code>ananda@kochi:~$ cd {Astro.url.pathname}</code><br /><code>cd: no such file or directory</code></p>
+    <a class="btn btn-primary" href="/">Back home</a>
+  </main>
+</Base>
+
+<style>
+  .nf {
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+  }
+  h1 {
+    font-size: clamp(2rem, 6vw, 3.2rem);
+    margin-bottom: 16px;
+  }
+  code {
+    font-family: var(--mono);
+    color: var(--text-2);
+  }
+  p {
+    margin-bottom: 28px;
+  }
+</style>

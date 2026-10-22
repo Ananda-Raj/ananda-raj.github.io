@@ -1,0 +1,69 @@
+[
+  {
+    "title": "Logging All SSH Commands & Sessions on a Bastion Host",
+    "url": "https://v-ananda-raj.medium.com/logging-all-ssh-commands-sessions-on-a-bastion-host-9a8ba0a0f9af",
+    "date": "2025-11-24T23:02:28.000Z",
+    "excerpt": "Complete Guide with Script, Permissions, and Log Rotation When managing multiple users on a bastion (jump) server, it is important to record everything a user types and sees during an SSH session. This includes: All…",
+    "image": "https://cdn-images-1.medium.com/max/766/1*FxH8Nel27Zu1OcG4Hj-gqQ.png",
+    "tags": []
+  },
+  {
+    "title": "OpenVPN Usage Report: Who Used the Most Bandwidth and When?",
+    "url": "https://v-ananda-raj.medium.com/openvpn-usage-report-who-used-the-most-bandwidth-and-when-03bcb36a0229",
+    "date": "2025-07-10T08:42:53.000Z",
+    "excerpt": "Step 1: Export Logs from OpenVPN Prerequisite: You need access to the OpenVPN Access Server (root or sudo) and Python 3 installed. Get a report of users’ traffic details, execute the command on the OpenVPN Access…",
+    "image": "https://cdn-images-1.medium.com/max/1024/1*a4x8DdjMNdZaJCHn5wD34Q.jpeg",
+    "tags": []
+  },
+  {
+    "title": "Streamlining CI/CD Deployments to EC2 Instances with GitHub Actions and AWS CodeDeploy",
+    "url": "https://v-ananda-raj.medium.com/streamlining-ci-cd-deployments-to-ec2-instances-with-github-actions-and-aws-codedeploy-9e9870c22335",
+    "date": "2024-12-26T15:09:56.000Z",
+    "excerpt": "Continuous Integration and Continuous Deployment (CI/CD) pipelines streamline the delivery process, ensuring reliable and frequent updates to your applications. In this blog, we’ll explore how to set up a CI/CD pipeline…",
+    "image": "https://cdn-images-1.medium.com/max/1024/1*UkGu7xhhIH78E9BWlYu7og.png",
+    "tags": [
+      "aws",
+      "codedeploy",
+      "cicd",
+      "github-actions",
+      "ci-cd-pipeline"
+    ]
+  },
+  {
+    "title": "Running Cron Tasks with Kubernetes",
+    "url": "https://v-ananda-raj.medium.com/running-cron-tasks-with-kubernetes-d3a7734f7e42",
+    "date": "2024-05-07T04:20:23.000Z",
+    "excerpt": "Before you begin To interact with your Kubernetes cluster, you’ll need two things in place: a Kubernetes cluster itself and the kubectl command-line tool configured to communicate with that cluster. Creating a CronJob…",
+    "tags": [
+      "devops",
+      "automation",
+      "cron",
+      "kubernetes"
+    ]
+  },
+  {
+    "title": "Clearing Unwanted AMIs with AWS CLI and Bash Script",
+    "url": "https://v-ananda-raj.medium.com/clearing-unwanted-amis-with-aws-cli-and-bash-script-68225667bfcc",
+    "date": "2024-04-16T06:39:25.000Z",
+    "excerpt": "This bash script will check the AMIs under and account and delete unused ones. It will verify the AMI has a tag enabling the “DeletionProtection” and also check if it is used in ASG, EC2, LT/LC, Spot and BeanStack. For…",
+    "image": "https://cdn-images-1.medium.com/max/1024/1*mWKDztnIzcpChIEnd6qmFw.png",
+    "tags": [
+      "programming",
+      "code",
+      "bash",
+      "aws"
+    ]
+  },
+  {
+    "title": "Unlocking Secure Passcodes: A Python3 Script for One-Time Password Challenges",
+    "url": "https://v-ananda-raj.medium.com/unlocking-secure-passcodes-a-python3-script-for-one-time-password-challenges-871d5ec28047",
+    "date": "2024-04-16T06:12:25.000Z",
+    "excerpt": "Discover how to automate the generation of one-time passwords (OTPs) with Python. The script simplifies the process of creating and displaying secure passcodes, ideal for enhancing authentication systems and bolstering…",
+    "image": "https://cdn-images-1.medium.com/max/1024/1*5dPgQJF92W4gQkgsgWZyjg.png",
+    "tags": [
+      "security",
+      "python3",
+      "otp-verification"
+    ]
+  }
+]

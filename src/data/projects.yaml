@@ -1,0 +1,11 @@
+- name: Plotmiles
+  show: false
+  status: In development
+  summary: Trip planner for long road trips across India. Sorts hundreds of stops into one route, plans safe daylight driving days with sensible night halts, and keeps working offline.
+  tech: [JavaScript, Leaflet, OSRM, AWS Lambda, Terraform]
+
+- name: Foldedmiles
+  show: false
+  status: In development
+  summary: Offline Mac app that folds your trip photos into printable albums. No AI, no data collected, open source under GPLv3.
+  tech: [Swift, macOS]

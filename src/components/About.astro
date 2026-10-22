@@ -1,0 +1,87 @@
+---
+import { profile, credentials, years, firstName } from '../lib/content';
+
+const facts = [
+  ['Based in', profile.location],
+  ['Experience', `${years}+ years in production`],
+  ['Currently', `${profile.role}, ${profile.company}`],
+  ['Community', credentials.recognition.map((r) => r.name.replace('Volunteer, ', '')).join(' · ')],
+  ['Languages', profile.languages.map((l) => l.name).join(', ')],
+];
+---
+
+<section id="about" class="section">
+  <div class="wrap about">
+    <div>
+      <p class="kicker">// about</p>
+      <h2>Hi, I'm {firstName}.</h2>
+      {profile.about.map((p) => <p>{p}</p>)}
+      <p class="off">{profile.offWork}</p>
+    </div>
+    <aside class="card facts">
+      <dl>
+        {
+          facts.map(([k, v]) => (
+            <div>
+              <dt>{k}</dt>
+              <dd>{v}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </aside>
+  </div>
+</section>
+
+<style>
+  .about {
+    display: grid;
+    grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+    gap: clamp(32px, 6vw, 72px);
+    align-items: start;
+  }
+  .about p:not(.kicker) {
+    color: var(--text-2);
+    max-width: 62ch;
+  }
+  .about .off {
+    color: var(--muted);
+    font-style: italic;
+  }
+  .about h2 {
+    margin-bottom: 24px;
+  }
+  .facts {
+    padding: 8px 22px;
+    position: sticky;
+    top: 88px;
+  }
+  dl {
+    margin: 0;
+  }
+  dl div {
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  dl div:last-child {
+    border: 0;
+  }
+  dt {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  dd {
+    margin: 2px 0 0;
+  }
+  @media (max-width: 860px) {
+    .about {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .facts {
+      position: static;
+    }
+  }
+</style>

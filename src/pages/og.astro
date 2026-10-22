@@ -1,0 +1,82 @@
+---
+// Rendered to /og.jpg (the link preview image) after the build, then removed.
+import '@fontsource-variable/inter';
+import '@fontsource/jetbrains-mono/400.css';
+import { getImage } from 'astro:assets';
+import mountains from '../assets/mountains.jpg';
+import photo from '../assets/photo.jpg';
+import { profile, years } from '../lib/content';
+
+const bg = await getImage({ src: mountains, width: 1400, format: 'jpg' });
+const avatar = await getImage({ src: photo, width: 240, format: 'jpg' });
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="robots" content="noindex" />
+  </head>
+  <body>
+    <div class="og" style={`--bg: url(${bg.src})`}>
+      <img src={avatar.src} alt="" />
+      <h1>{profile.name}</h1>
+      <p class="role">{profile.role} · {years}+ years on AWS</p>
+      <p class="focus">{profile.focus.join('  ·  ')}</p>
+      <p class="url">{profile.site.replace('https://', '')}</p>
+    </div>
+  </body>
+</html>
+
+<style is:global>
+  body {
+    margin: 0;
+  }
+  .og {
+    width: 1200px;
+    height: 630px;
+    padding: 80px 88px;
+    box-sizing: border-box;
+    color: #eceef3;
+    font-family: 'Inter Variable', sans-serif;
+    background:
+      linear-gradient(90deg, rgba(10, 12, 17, 0.96) 0%, rgba(10, 12, 17, 0.8) 50%, rgba(10, 12, 17, 0.3) 100%),
+      var(--bg) center 40% / cover;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  img {
+    width: 104px;
+    height: 104px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: 50% 30%;
+    border: 3px solid rgba(255, 255, 255, 0.18);
+    margin-bottom: 28px;
+  }
+  h1 {
+    font-size: 76px;
+    font-weight: 780;
+    letter-spacing: -0.035em;
+    margin: 0;
+    line-height: 1;
+  }
+  .role {
+    font-size: 32px;
+    margin: 18px 0 0;
+    color: #ff8f6b;
+    font-weight: 600;
+  }
+  .focus {
+    font-size: 26px;
+    margin: 14px 0 0;
+    color: #b6bcc8;
+  }
+  .url {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 22px;
+    margin: 40px 0 0;
+    color: #8a91a0;
+  }
+</style>

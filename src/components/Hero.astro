@@ -1,0 +1,164 @@
+---
+import { Image, Picture } from 'astro:assets';
+import mountains from '../assets/mountains.jpg';
+import photo from '../assets/photo.jpg';
+import Icon from './Icon.astro';
+import Terminal from './Terminal.astro';
+import { profile, years, phoneDisplay } from '../lib/content';
+---
+
+<section class="hero" id="top">
+  <Picture
+    src={mountains}
+    alt=""
+    class="hero-bg"
+    widths={[800, 1400, 2200]}
+    sizes="100vw"
+    formats={['avif', 'webp']}
+    loading="eager"
+    fetchpriority="high"
+  />
+  <div class="hero-shade" aria-hidden="true"></div>
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <div class="hello">
+        <Image src={photo} alt={profile.name} width={192} height={192} class="avatar" loading="eager" />
+        <span class="where">
+          <span><Icon name="pin" size={15} /> {profile.location}</span>
+          {profile.phone && <a href={`tel:${profile.phone}`}><Icon name="phone" size={15} /> {phoneDisplay}</a>}
+        </span>
+      </div>
+      <h1>{profile.name}</h1>
+      <p class="role"><span class="grad">{profile.role}</span> at {profile.company}</p>
+      <p class="lede">Building and running AWS infrastructure in production for {years}+ years.</p>
+      <ul class="chips">{profile.focus.map((f) => <li class="chip">{f}</li>)}</ul>
+      <p class="tagline">{profile.tagline}</p>
+      <div class="cta">
+        <a class="btn btn-primary" href="#contact"><Icon name="mail" /> Get in touch</a>
+        <a class="btn btn-ghost" href="/cv/">View CV</a>
+        <span class="socials">
+          <a class="icon-link" href={profile.links.linkedin} target="_blank" rel="noopener" aria-label="LinkedIn"><Icon name="linkedin" /></a>
+          <a class="icon-link" href={profile.links.github} target="_blank" rel="noopener" aria-label="GitHub"><Icon name="github" /></a>
+          <a class="icon-link" href={profile.links.medium} target="_blank" rel="noopener" aria-label="Medium"><Icon name="medium" /></a>
+        </span>
+      </div>
+    </div>
+    <Terminal />
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: min(100svh, 940px);
+    display: flex;
+    align-items: center;
+    padding-block: 112px 72px;
+    isolation: isolate;
+    overflow: hidden;
+  }
+  .hero :global(.hero-bg),
+  .hero :global(.hero-bg img) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 60% 40%;
+    z-index: -2;
+  }
+  .hero-shade {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      linear-gradient(90deg, rgba(10, 12, 17, 0.92) 0%, rgba(10, 12, 17, 0.7) 45%, rgba(10, 12, 17, 0.35) 100%),
+      linear-gradient(180deg, rgba(10, 12, 17, 0.2) 0%, rgba(10, 12, 17, 0) 50%, var(--bg) 100%);
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+    gap: clamp(32px, 5vw, 64px);
+    align-items: center;
+  }
+  .hello {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 22px;
+  }
+  .avatar {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: 50% 30%;
+    border: 2px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 0 0 4px rgba(239, 78, 90, 0.18);
+  }
+  .where {
+    display: grid;
+    gap: 4px;
+    color: var(--text-2);
+    font-size: 0.9rem;
+  }
+  .where > * {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+  }
+  h1 {
+    font-size: clamp(2.6rem, 6.4vw, 4.4rem);
+    font-weight: 780;
+    letter-spacing: -0.035em;
+  }
+  .role {
+    font-size: clamp(1.1rem, 2.2vw, 1.35rem);
+    color: var(--text-2);
+    margin: 12px 0 6px;
+  }
+  .grad {
+    background: linear-gradient(90deg, var(--accent-2), var(--accent));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-weight: 650;
+  }
+  .lede {
+    color: var(--text-2);
+    margin-bottom: 18px;
+  }
+  .chips {
+    margin-bottom: 22px;
+  }
+  .chip {
+    background: rgba(24, 29, 41, 0.75);
+  }
+  .tagline {
+    border-left: 3px solid var(--accent);
+    padding: 2px 0 2px 14px;
+    font-size: 1.05rem;
+    color: var(--text);
+    max-width: 46ch;
+    margin-bottom: 28px;
+  }
+  .cta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+  }
+  .socials {
+    display: flex;
+    gap: 8px;
+  }
+  @media (max-width: 920px) {
+    .hero-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .hero-shade {
+      background: linear-gradient(180deg, rgba(10, 12, 17, 0.75) 0%, rgba(10, 12, 17, 0.85) 60%, var(--bg) 100%);
+    }
+  }
+</style>

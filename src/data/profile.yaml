@@ -1,0 +1,35 @@
+name: V Ananda Raj
+role: Senior DevOps Engineer
+company: Qubryx
+location: Kochi, Kerala, India
+phone: '+918129524634'
+careerStart: 2018-05
+email: vanandaraj0001@gmail.com
+site: https://ananda-raj.github.io
+links:
+  linkedin: https://www.linkedin.com/in/v-ananda-raj
+  github: https://github.com/Ananda-Raj
+  medium: https://v-ananda-raj.medium.com
+focus:
+  - AWS
+  - Kubernetes
+  - Terraform
+  - GenAI on AWS
+tagline: If you're stuck on something in AWS, Kubernetes, or GenAI, my inbox is open.
+contact:
+  heading: Stuck on something?
+  text: Whether it's an AWS bill that keeps growing, a Kubernetes rollout that won't settle, or a GenAI idea you want to ship safely, I'm happy to talk it through. Questions, ideas, community events, or just a hello, I read everything.
+about:
+  - I work across AWS, Terraform, Kubernetes (EKS), Helm, ArgoCD, GitHub Actions, GitLab CI/CD, Linux, and Bash/Python. I like automating repetitive work, simplifying operations, and making production systems more reliable.
+  - My path, from Linux System Engineer to Site Reliability Engineer to DevOps Engineer, gave me a strong base in Linux, troubleshooting, and production support.
+  - I also build GenAI applications end to end, from LLM integration to secure deployment, auth, and cost control on AWS.
+  - I'm an AWS Community Builder (AI Engineering) and volunteer with AWS User Group Kochi. Through the community, I've found I enjoy helping others as much as building things.
+offWork: Away from the keyboard I enjoy travelling to new places, long drives, experimenting in the kitchen, and getting lost in music and good stories.
+summary: Senior DevOps Engineer with {years} years of experience in AWS cloud infrastructure, Kubernetes (EKS), Linux administration, CI/CD, Infrastructure as Code, and automation. Designs, builds, and optimizes scalable, secure, and highly available cloud platforms using Terraform and containerized workloads on Kubernetes across multiple customer environments. Implements CI/CD and GitOps workflows with GitHub Actions, GitLab CI/CD, ArgoCD, Helm, Amazon ECS, and Amazon EKS, and develops reusable infrastructure modules that improve deployment reliability. Strong background in Linux administration, production support, troubleshooting, and Bash and Python automation. Builds GenAI applications end to end on AWS. AWS Community Builder (AI Engineering) and volunteer with AWS User Group Kochi.
+languages:
+  - name: Malayalam
+    level: Native
+  - name: English
+    level: Professional working
+  - name: Tamil
+    level: Limited working

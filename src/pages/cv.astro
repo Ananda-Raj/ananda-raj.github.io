@@ -1,0 +1,347 @@
+---
+import '@fontsource-variable/inter';
+import Head from '../components/Head.astro';
+import { profile, experience, skills, credentials, projects, summary, cvFile, phoneDisplay } from '../lib/content';
+import { getPosts } from '../lib/feeds';
+import { range, monthYear } from '../lib/dates';
+
+const posts = (await getPosts()).slice(0, 3);
+const host = (u: string) => u.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
+const { certifications, recognition, education } = credentials;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <Head title={`${profile.name} – CV`} description={`CV of ${profile.name}, ${profile.role}.`} />
+  </head>
+  <body>
+    <nav class="toolbar">
+      <a href="/">← Back to site</a>
+      <a class="dl" href={`/${cvFile}`} download>Download PDF</a>
+    </nav>
+
+    <main class="page">
+      <header>
+        <h1>{profile.name}</h1>
+        <p class="headline">{profile.role} <span class="loc">· {profile.location}</span></p>
+        <p class="contact">
+          {profile.phone && <a href={`tel:${profile.phone}`}>{phoneDisplay}</a>}
+          <a href={`mailto:${profile.email}`}>{profile.email}</a>
+          <a href={profile.links.linkedin}>{host(profile.links.linkedin)}</a>
+        </p>
+        <p class="contact">
+          <a href={profile.links.github}>{host(profile.links.github)}</a>
+          <a href={profile.site}>{host(profile.site)}</a>
+        </p>
+      </header>
+
+      <section>
+        <h2>Summary</h2>
+        <p>{summary}</p>
+      </section>
+
+      <section>
+        <h2>Skills</h2>
+        <ul class="skills">
+          {
+            skills.map((s) => (
+              <li>
+                <strong>{s.group}:</strong> {s.items.join(', ')}
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+
+      <section>
+        <h2>Experience</h2>
+        {
+          experience.flatMap((e) =>
+            e.roles.map((r, i) => (
+              <div class="job">
+                <div class="row">
+                  <h3>
+                    {r.title}, <span class="org">{e.company}</span>
+                  </h3>
+                  <span class="dates">{range(r.start, r.end)}</span>
+                </div>
+                {((i === 0 && e.location) || r.note) && <p class="sub">{[i === 0 && e.location, r.note].filter(Boolean).join(' · ')}</p>}
+                {r.highlights.length > 0 && (
+                  <ul>
+                    {r.highlights.slice(0, r.cvBullets).map((h) => (
+                      <li>{h}</li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            )),
+          )
+        }
+      </section>
+
+      {
+        projects.length > 0 && (
+          <section>
+            <h2>Projects</h2>
+            {projects.map((p) => (
+              <div class="job">
+                <h3>{p.name}</h3>
+                <p>
+                  {p.summary} {p.tech.length > 0 && <span class="sub">({p.tech.join(', ')})</span>}
+                </p>
+              </div>
+            ))}
+          </section>
+        )
+      }
+
+      <section>
+        <h2>Certifications</h2>
+        <ul class="plain">
+          {
+            certifications.map((c) => (
+              <li>
+                <strong>{c.name}</strong>, {[c.issuer, c.expired && '(expired)'].filter(Boolean).join(' ')}
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+
+      <section>
+        <h2>Community and Recognition</h2>
+        <ul class="plain">
+          {
+            recognition.map((r) => (
+              <li>
+                <strong>{r.name}</strong>, {[r.issuer, r.since && `since ${r.since}`].filter(Boolean).join(', ')}
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+
+      {
+        posts.length > 0 && (
+          <section>
+            <h2>Publications</h2>
+            <ul class="plain">
+              {posts.map((p) => (
+                <li>
+                  <a href={p.url}>{p.title}</a> <span class="sub">· Medium · {monthYear(p.date.slice(0, 7))}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )
+      }
+
+      <section>
+        <h2>Education</h2>
+        {
+          education.map((e) => (
+            <div class="row">
+              <p>
+                <strong>{e.degree}</strong>, {e.school}
+              </p>
+              <span class="dates">
+                {e.start} – {e.end}
+              </span>
+            </div>
+          ))
+        }
+      </section>
+
+      <section>
+        <h2>Languages</h2>
+        <p>{profile.languages.map((l) => `${l.name} (${l.level})`).join(', ')}</p>
+      </section>
+    </main>
+  </body>
+</html>
+
+<style is:global>
+  :root {
+    --ink: #1b1e25;
+    --ink-2: #3d4350;
+    --ink-3: #6a7180;
+    --rule: #e2e5ea;
+    --accent: #c22f3d;
+  }
+  * {
+    box-sizing: border-box;
+  }
+  html {
+    background: #e8eaee;
+  }
+  body {
+    margin: 0;
+    color: var(--ink);
+    font-family: 'Inter Variable', Arial, Helvetica, sans-serif;
+    font-size: 9.5pt;
+    line-height: 1.38;
+    font-variant-ligatures: none;
+    font-feature-settings: 'liga' 0, 'clig' 0, 'calt' 0;
+    -webkit-font-smoothing: antialiased;
+  }
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+  .toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 210mm;
+    margin: 0 auto;
+    padding: 16px 4px;
+    font-size: 14px;
+  }
+  .toolbar a:hover {
+    text-decoration: underline;
+  }
+  .toolbar .dl {
+    background: var(--accent);
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+  }
+  .page {
+    background: #fff;
+    width: 210mm;
+    max-width: 100%;
+    min-height: 297mm;
+    margin: 0 auto 48px;
+    padding: 14mm 16mm;
+    box-shadow: 0 10px 40px -12px rgba(0, 0, 0, 0.25);
+  }
+  h1 {
+    font-size: 24pt;
+    font-weight: 750;
+    letter-spacing: -0.02em;
+    margin: 0;
+    color: var(--accent);
+    line-height: 1.1;
+  }
+  .headline {
+    font-size: 12pt;
+    font-weight: 600;
+    margin: 4px 0 6px;
+  }
+  .loc {
+    font-weight: 400;
+    color: var(--ink-2);
+  }
+  .contact {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px 0;
+    margin: 0;
+    color: var(--ink-2);
+    font-size: 9pt;
+  }
+  .contact > * + *::before {
+    content: '|';
+    margin: 0 8px;
+    color: var(--rule);
+  }
+  section {
+    margin-top: 11px;
+  }
+  h2 {
+    font-size: 10pt;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 2px;
+    margin: 0 0 5px;
+  }
+  h3 {
+    font-size: 10pt;
+    font-weight: 650;
+    margin: 0;
+  }
+  .org {
+    font-weight: 500;
+    color: var(--ink-2);
+  }
+  p {
+    margin: 0;
+  }
+  .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+  }
+  .dates {
+    flex: none;
+    font-size: 9pt;
+    color: var(--ink-3);
+    font-variant-numeric: tabular-nums;
+  }
+  .sub {
+    font-size: 9pt;
+    color: var(--ink-3);
+  }
+  .job {
+    margin-bottom: 6px;
+  }
+  .row,
+  h2 {
+    break-after: avoid;
+  }
+  li {
+    break-inside: avoid;
+  }
+  ul {
+    margin: 2px 0 0;
+    padding-left: 14px;
+  }
+  li {
+    margin-bottom: 1px;
+  }
+  li::marker {
+    color: var(--accent);
+  }
+  ul.skills,
+  ul.plain {
+    list-style: none;
+    padding: 0;
+  }
+  @page {
+    size: A4;
+    margin: 11mm 14mm;
+  }
+  @media print {
+    html {
+      background: #fff;
+    }
+    .toolbar {
+      display: none;
+    }
+    .page {
+      width: auto;
+      min-height: 0;
+      margin: 0;
+      padding: 0;
+      box-shadow: none;
+    }
+  }
+  @media screen and (max-width: 820px) {
+    .page {
+      padding: 24px 18px;
+      min-height: 0;
+    }
+    .toolbar {
+      padding: 14px 16px;
+    }
+    .row {
+      flex-wrap: wrap;
+    }
+  }
+</style>

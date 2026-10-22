@@ -1,0 +1,22 @@
+- group: Cloud Platforms
+  items: [AWS, EC2, EKS, ECS, S3, RDS, IAM, VPC, Route 53, CloudWatch, ALB/NLB, Lambda, Auto Scaling, Azure Fundamentals]
+- group: Containers, Orchestration & GitOps
+  items: [Kubernetes, Docker, Helm, ArgoCD]
+- group: Infrastructure as Code & Automation
+  items: [Terraform, CloudFormation, Ansible, Bash/Shell Scripting, Python]
+- group: CI/CD & DevOps Tools
+  items: [GitHub Actions, GitLab CI/CD, AWS CodeDeploy]
+- group: Monitoring & Observability
+  items: [Datadog, CloudWatch, Squadcast, Elasticsearch/OpenSearch]
+- group: Operating Systems & Web Infrastructure
+  items: [Linux (RHEL, Ubuntu), Nginx, Apache, HAProxy]
+- group: Databases & Caching
+  items: [MySQL/MariaDB, PostgreSQL, Redis, ElastiCache]
+- group: Networking & Security
+  items: [DNS, Load Balancers, Security Groups, Security Hub]
+- group: GenAI
+  items: [LLM integration, GenAI applications on AWS]
+- group: Version Control & Collaboration
+  items: [Git, GitHub, GitLab, Jira, Slack, Microsoft Teams]
+- group: Operations & Reliability
+  items: [Incident Handling, RCA, Production Support, Monitoring & Alerting]

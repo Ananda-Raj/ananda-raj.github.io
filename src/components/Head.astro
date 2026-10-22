@@ -1,0 +1,45 @@
+---
+import { profile, skills } from '../lib/content';
+
+interface Props {
+  title: string;
+  description: string;
+  noindex?: boolean;
+}
+const { title, description, noindex = false } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImage = new URL('/og.jpg', Astro.site);
+
+const person = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: profile.name,
+  jobTitle: profile.role,
+  worksFor: { '@type': 'Organization', name: profile.company },
+  address: { '@type': 'PostalAddress', addressLocality: profile.location },
+  url: profile.site,
+  ...(profile.phone && { telephone: profile.phone }),
+  sameAs: Object.values(profile.links),
+  knowsAbout: skills.flatMap((s) => s.items).slice(0, 20),
+};
+---
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<meta name="theme-color" content="#0a0c11" />
+<meta name="author" content={profile.name} />
+<meta property="og:type" content="profile" />
+<meta property="og:site_name" content={profile.name} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={ogImage} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+{noindex && <meta name="robots" content="noindex" />}
+<script type="application/ld+json" set:html={JSON.stringify(person)} />

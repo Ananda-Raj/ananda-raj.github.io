@@ -1,0 +1,31 @@
+---
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import Hero from '../components/Hero.astro';
+import About from '../components/About.astro';
+import Experience from '../components/Experience.astro';
+import Skills from '../components/Skills.astro';
+import Work from '../components/Work.astro';
+import Writing from '../components/Writing.astro';
+import Credentials from '../components/Credentials.astro';
+import Contact from '../components/Contact.astro';
+import Footer from '../components/Footer.astro';
+import { profile, years } from '../lib/content';
+
+const description = `${profile.role} in ${profile.location.split(',')[0]} with ${years}+ years building and running AWS infrastructure: Kubernetes, Terraform, CI/CD, and GenAI on AWS.`;
+---
+
+<Base title={`${profile.name} · ${profile.role}`} description={description}>
+  <Nav />
+  <main>
+    <Hero />
+    <About />
+    <Experience />
+    <Skills />
+    <Work />
+    <Writing />
+    <Credentials />
+    <Contact />
+  </main>
+  <Footer />
+</Base>

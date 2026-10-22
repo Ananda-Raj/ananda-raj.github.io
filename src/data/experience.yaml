@@ -1,0 +1,61 @@
+- company: Qubryx Solutions
+  location: Kochi, Kerala, India
+  roles:
+    - title: Senior DevOps Engineer
+      start: 2026-06
+      highlights:
+        - Working on AWS cloud infrastructure and Infrastructure as Code using Terraform.
+        - Supporting GitHub migrations, CI/CD automation, and Kubernetes (EKS) platform operations.
+        - Assisting with cloud infrastructure provisioning, deployment workflows, and operational automation for enterprise environments.
+        - Collaborating with engineering teams to build secure, scalable, and reliable cloud platforms.
+
+- company: Redux
+  location: Kochi, Kerala, India
+  roles:
+    - title: DevOps Engineer / DevOps Engineer – L2
+      start: 2023-10
+      end: 2026-06
+      cvBullets: 7
+      highlights:
+        - Built and managed AWS infrastructure using Terraform for Kubernetes (EKS), ECS, EC2 Auto Scaling, CloudFront, S3, IAM, Route 53, and networking components across multiple customer environments.
+        - Implemented CI/CD and GitOps-based deployment workflows using GitHub Actions, GitLab CI/CD, ArgoCD, Helm, ECS, and EKS for containerized and EC2-based application platforms.
+        - Developed reusable Terraform modules and deployment workflows for provisioning and maintaining customer environments on AWS.
+        - Created Bash, Python, and AWS CLI automation utilities for backup auditing, VPC Flow Log validation, AMI cleanup verification, operational reporting, and infrastructure maintenance across multiple AWS accounts.
+        - Streamlined EC2 patching and system update workflows using AWS Systems Manager (SSM), Maintenance Windows, custom SSM documents, and DNF Automatic.
+        - Built internal tooling and operational utilities that simplified bastion access workflows, automated repetitive tasks, and improved operational efficiency across engineering teams.
+        - Performed infrastructure optimization, WAF tuning, Security Hub remediation, backup validation, monitoring improvements, and troubleshooting for customer-facing production platforms.
+        - Supported high-priority production environments with infrastructure scaling, deployment support, patching, backup management, and rapid issue resolution for customer-facing applications.
+        - Worked with technologies including MongoDB Atlas, Apache Superset, Kubernetes (EKS), Terraform, GitHub Actions, ECS, and Linux-based production environments.
+    - title: Site Reliability Engineer / SRE Lead – DevOps
+      start: 2020-08
+      end: 2023-09
+      note: Site Reliability Engineer → Senior SRE → Senior SRE – Lead → SRE Lead – DevOps
+      cvBullets: 6
+      highlights:
+        - Handled day-to-day production monitoring, troubleshooting, deployments, and operational support for Linux and Kubernetes-based customer environments running on AWS.
+        - Coordinated incident response, infrastructure troubleshooting, production escalations, and operational improvements across multiple client platforms.
+        - Investigated and resolved production issues related to high CPU utilization, traffic spikes, incoming connection floods, infrastructure bottlenecks, and application availability.
+        - Assisted with infrastructure scaling, WAF rule tuning, deployment support, and remediation of operational and security-related issues affecting customer-facing applications.
+        - Developed automation scripts and operational tooling for logging, vulnerability information gathering, disk cleanup operations, reporting, and routine maintenance activities.
+        - Streamlined recurring operational activities including EC2 patching, ElastiCache service updates, backup auditing, and infrastructure validation workflows.
+        - Contributed to internal knowledge base documentation, operational process improvements, SRE tooling enhancements, and automation initiatives.
+        - Progressed internally through multiple SRE and DevOps roles based on technical contributions, operational ownership, and production support capabilities.
+
+- company: SupportSages Consultancy Services Pvt Ltd
+  location: Kochi, Kerala, India
+  roles:
+    - title: System Engineer
+      start: 2018-05
+      end: 2020-08
+      note: Technical Engineer for client Aspiration Hosting, Aug 2018 – Aug 2020
+      cvBullets: 6
+      highlights:
+        - Managed and optimized Linux-based hosting environments for WordPress, Magento, and customer web applications across cloud and dedicated server infrastructure.
+        - Performed Linux server administration, troubleshooting, patching, security hardening, backup management, and performance optimization for production environments.
+        - Configured and maintained web infrastructure including Nginx, Apache, Redis, LiteMage, MySQL/MariaDB, Percona, and cPanel-based hosting platforms.
+        - Supported AWS services including EC2, S3, RDS, and CloudFront for application hosting, CDN configuration, and infrastructure operations.
+        - Built operational automation and alerting workflows using Bash, Python, PHP, Ansible, and monitoring integrations with Slack and Mattermost.
+        - Implemented and maintained monitoring solutions using Nagios and Zabbix for infrastructure visibility and operational alerting.
+        - Assisted customers and development teams with infrastructure troubleshooting, migrations, deployments, backup validation, and production issue resolution.
+        - Coordinated abuse reports, operational escalations, backup systems, and routine maintenance activities across customer environments.
+        - Worked with containerized and cloud-based deployments using Docker, AWS Elastic Beanstalk, Git, and Travis CI.

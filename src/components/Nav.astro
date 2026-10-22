@@ -1,0 +1,92 @@
+---
+import { profile } from '../lib/content';
+
+const links = [
+  ['About', '#about'],
+  ['Experience', '#experience'],
+  ['Skills', '#skills'],
+  ['Work', '#work'],
+  ['Writing', '#writing'],
+  ['Contact', '#contact'],
+];
+---
+
+<header class="nav" data-nav>
+  <div class="wrap nav-inner">
+    <a href="#top" class="brand" aria-label="Back to top">
+      <img src="/favicon.svg" alt="" width="28" height="28" />
+      <span>{profile.name}</span>
+    </a>
+    <nav aria-label="Sections">
+      <ul>{links.map(([label, href]) => <li><a href={href}>{label}</a></li>)}</ul>
+    </nav>
+    <a class="btn btn-sm btn-ghost" href="/cv/">CV</a>
+  </div>
+</header>
+
+<script>
+  const nav = document.querySelector('[data-nav]')!;
+  const onScroll = () => nav.classList.toggle('scrolled', scrollY > 24);
+  addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+</script>
+
+<style>
+  .nav {
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: 50;
+    transition: background 0.25s, border-color 0.25s;
+    border-bottom: 1px solid transparent;
+  }
+  .nav:global(.scrolled) {
+    background: rgba(10, 12, 17, 0.78);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom-color: var(--border);
+  }
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    height: 64px;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 650;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  nav {
+    margin-left: auto;
+  }
+  ul {
+    display: flex;
+    gap: 4px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  nav a {
+    display: block;
+    padding: 6px 10px;
+    border-radius: 8px;
+    color: var(--text-2);
+    text-decoration: none;
+    font-size: 0.92rem;
+  }
+  nav a:hover {
+    color: var(--text);
+    background: var(--surface-2);
+  }
+  @media (max-width: 860px) {
+    nav {
+      display: none;
+    }
+    .btn {
+      margin-left: auto;
+    }
+  }
+</style>
