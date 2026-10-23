@@ -16,7 +16,7 @@ terraform {
   }
   # State bucket comes from ../state-bucket.sh. Credentials come from AWS_PROFILE.
   backend "s3" {
-    bucket       = "ananda-raj-tfstate-ap-south-1"
+    bucket       = "ananda-raj-app-tfstate-ap-south-1"
     key          = "ananda-raj-site/prod/api.tfstate"
     region       = "ap-south-1"
     encrypt      = true

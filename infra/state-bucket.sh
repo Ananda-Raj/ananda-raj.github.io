@@ -4,7 +4,7 @@
 # Usage: AWS_PROFILE=<profile> ./state-bucket.sh
 set -euo pipefail
 
-BUCKET="${BUCKET:-ananda-raj-tfstate-ap-south-1}"
+BUCKET="${BUCKET:-ananda-raj-app-tfstate-ap-south-1}"
 REGION="${REGION:-ap-south-1}"
 
 if aws s3api head-bucket --bucket "$BUCKET" 2>/dev/null; then
