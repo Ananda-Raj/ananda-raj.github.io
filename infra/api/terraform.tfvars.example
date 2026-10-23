@@ -1,2 +1,0 @@
-aws_profile  = "YOUR_AWS_PROFILE"
-notify_email = "you@example.com"

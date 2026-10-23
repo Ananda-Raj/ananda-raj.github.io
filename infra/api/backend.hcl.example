@@ -1,6 +1,0 @@
-bucket       = "ananda-raj-site-prod-tfstate-ACCOUNT_ID"
-key          = "ananda-raj-site/prod/api.tfstate"
-region       = "ap-south-1"
-profile      = "YOUR_AWS_PROFILE"
-encrypt      = true
-use_lockfile = true

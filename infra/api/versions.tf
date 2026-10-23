@@ -14,6 +14,12 @@ terraform {
       version = "~> 3.7"
     }
   }
-  # Settings in backend.hcl: terraform init -backend-config=backend.hcl
-  backend "s3" {}
+  # State bucket comes from ../state-bucket.sh. Credentials come from AWS_PROFILE.
+  backend "s3" {
+    bucket       = "ananda-raj-tfstate-ap-south-1"
+    key          = "ananda-raj-site/prod/api.tfstate"
+    region       = "ap-south-1"
+    encrypt      = true
+    use_lockfile = true
+  }
 }

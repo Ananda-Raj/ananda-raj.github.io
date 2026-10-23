@@ -3,10 +3,6 @@ variable "aws_region" {
   default = "ap-south-1"
 }
 
-variable "aws_profile" {
-  type = string
-}
-
 variable "project" {
   type    = string
   default = "ananda-raj-site"
@@ -36,6 +32,7 @@ variable "dev_origins" {
 variable "notify_email" {
   description = "Receives contact form messages. Must be verified in SES (AWS emails a link)."
   type        = string
+  default     = "vanandaraj0001@gmail.com"
 }
 
 variable "model_id" {
