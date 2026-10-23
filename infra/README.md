@@ -29,7 +29,10 @@ terraform apply
 Then:
 
 1. Click the verification link SES emails to `notify_email`.
-2. In the CloudFront console, subscribe the distribution to the free flat-rate plan and add an IP rate-limit rule.
+2. In the CloudFront console, subscribe the distribution to the free flat-rate plan. Then on its **Security** tab,
+   edit **Security – Web Application Firewall (WAF)**, tick **Rate limiting** (30 per IP), save, and choose
+   **Monitor mode → Enable blocking** (it only counts until you do). Terraform ignores this web ACL, as the
+   provider can't manage pricing plans yet.
 3. Invoke the model once in the Bedrock playground (sets up model access).
 4. Put the `api_url` output into the site settings (admin → Site settings → API URL).
 
