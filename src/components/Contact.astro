@@ -1,6 +1,6 @@
 ---
 import Icon from './Icon.astro';
-import { profile, phoneDisplay, apiUrl, firstName } from '../lib/content';
+import { profile, phoneDisplay, apiUrl, assistantOn, firstName } from '../lib/content';
 
 const suggestions = [
   `What does ${firstName} work on?`,
@@ -19,7 +19,8 @@ const suggestions = [
 
       {
         apiUrl && (
-          <div class="duo" data-api={apiUrl} data-name={firstName}>
+          <div class={assistantOn ? 'duo' : 'solo'} data-api={apiUrl} data-name={firstName}>
+            {assistantOn && (
             <div class="card chat">
               <div class="chat-head">
                 <span class="title">
@@ -50,6 +51,7 @@ const suggestions = [
                 </a>
               </p>
             </div>
+            )}
 
             <form class="card form" id="contact-form" data-contact novalidate>
               <h3>Send a message</h3>
@@ -116,11 +118,10 @@ const suggestions = [
   if (root) {
     const api = root.dataset.api!;
     const name = root.dataset.name!;
-    const log = root.querySelector<HTMLElement>('[data-log]')!;
-    const suggest = root.querySelector<HTMLElement>('[data-suggest]')!;
-    const ask = root.querySelector<HTMLFormElement>('[data-ask]')!;
-    const input = ask.querySelector('textarea')!;
-    const handoff = root.querySelector<HTMLAnchorElement>('[data-handoff]')!;
+    const log = root.querySelector<HTMLElement>('[data-log]');
+    const suggest = root.querySelector<HTMLElement>('[data-suggest]');
+    const ask = root.querySelector<HTMLFormElement>('[data-ask]');
+    const handoff = root.querySelector<HTMLAnchorElement>('[data-handoff]');
     const form = root.querySelector<HTMLFormElement>('[data-contact]')!;
     const include = root.querySelector<HTMLElement>('[data-include]')!;
     const status = root.querySelector<HTMLElement>('[data-status]')!;
@@ -128,6 +129,7 @@ const suggestions = [
     let busy = false;
 
     const add = (cls: string, text: string) => {
+      if (!log) return document.createElement('div');
       const div = document.createElement('div');
       div.className = `msg ${cls}`;
       renderText(div, text);
@@ -144,7 +146,7 @@ const suggestions = [
         return;
       }
       busy = true;
-      suggest.hidden = true;
+      if (suggest) suggest.hidden = true;
       add('me', text);
       history.push({ role: 'user', content: text });
       const wait = add('bot typing', '');
@@ -153,7 +155,7 @@ const suggestions = [
         wait.remove();
         add('bot', reply);
         history.push({ role: 'assistant', content: reply });
-        handoff.hidden = false;
+        if (handoff) handoff.hidden = false;
         include.hidden = false;
       } catch (err) {
         wait.remove();
@@ -164,32 +166,35 @@ const suggestions = [
       }
     }
 
-    suggest.querySelectorAll('button').forEach((b) => b.addEventListener('click', () => send(b.textContent || '')));
+    if (ask && suggest && handoff) {
+      const input = ask.querySelector('textarea')!;
+      suggest.querySelectorAll('button').forEach((b) => b.addEventListener('click', () => send(b.textContent || '')));
 
-    ask.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const text = input.value;
-      input.value = '';
-      input.style.height = '';
-      send(text);
-    });
-
-    input.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' && !e.shiftKey) {
+      ask.addEventListener('submit', (e) => {
         e.preventDefault();
-        ask.requestSubmit();
-      }
-    });
+        const text = input.value;
+        input.value = '';
+        input.style.height = '';
+        send(text);
+      });
 
-    input.addEventListener('input', () => {
-      input.style.height = '';
-      input.style.height = `${Math.min(input.scrollHeight, 140)}px`;
-    });
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          e.preventDefault();
+          ask.requestSubmit();
+        }
+      });
 
-    handoff.addEventListener('click', () => {
-      include.querySelector('input')!.checked = true;
-      setTimeout(() => form.querySelector<HTMLInputElement>('input[name="name"]')!.focus(), 300);
-    });
+      input.addEventListener('input', () => {
+        input.style.height = '';
+        input.style.height = `${Math.min(input.scrollHeight, 140)}px`;
+      });
+
+      handoff.addEventListener('click', () => {
+        include.querySelector('input')!.checked = true;
+        setTimeout(() => form.querySelector<HTMLInputElement>('input[name="name"]')!.focus(), 300);
+      });
+    }
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -274,7 +279,11 @@ const suggestions = [
     gap: 16px;
     align-items: stretch;
   }
-  .duo .card {
+  .solo {
+    max-width: 640px;
+  }
+  .duo .card,
+  .solo .card {
     background: rgba(10, 12, 17, 0.55);
     border-color: var(--border-strong);
   }

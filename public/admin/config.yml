@@ -177,6 +177,12 @@ singletons:
         type: url
         required: false
         hint: The api_url output from Terraform. Leave empty to hide the AI chat and contact form.
+      - name: assistant
+        label: Show the AI chat
+        widget: boolean
+        required: false
+        default: true
+        hint: Turn off to keep only the contact form, e.g. while model access is pending.
 
   - name: projects
     label: Projects

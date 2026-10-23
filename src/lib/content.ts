@@ -67,7 +67,7 @@ const Projects = z.array(
   }),
 );
 
-const Settings = z.object({ apiUrl: z.union([url, z.literal('')]).default('') });
+const Settings = z.object({ apiUrl: z.union([url, z.literal('')]).default(''), assistant: z.boolean().default(true) });
 
 function load<T extends z.ZodTypeAny>(file: string, schema: T): z.infer<T> {
   const raw = parse(files[`../data/${file}`]) ?? {};
@@ -87,6 +87,7 @@ export const settings = load('settings.yaml', Settings);
 
 // PUBLIC_API_URL overrides the setting for local testing.
 export const apiUrl = (import.meta.env.PUBLIC_API_URL || settings.apiUrl).replace(/\/$/, '');
+export const assistantOn = Boolean(apiUrl) && settings.assistant;
 
 // Stops the live build from publishing placeholder text.
 const drafts = experience.filter((e) => e.draft).map((e) => e.company);

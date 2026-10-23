@@ -1,5 +1,5 @@
 ---
-import { profile, experience, skills, projects, years, cvFile, phoneDisplay, apiUrl } from '../lib/content';
+import { profile, experience, skills, projects, years, cvFile, phoneDisplay, apiUrl, assistantOn } from '../lib/content';
 import { getPosts, getRepos } from '../lib/feeds';
 import { monthYear } from '../lib/dates';
 
@@ -55,9 +55,9 @@ const commands: Record<string, { desc: string; out: Line[] }> = {
   clear: { desc: 'clear the screen', out: [] },
 };
 
-const data = { commands, years, prompt: 'ananda@kochi:~$', api: apiUrl };
+const data = { commands, years, prompt: 'ananda@kochi:~$', api: assistantOn ? apiUrl : '' };
 const intro = ['whoami', 'focus'];
-const chips = apiUrl ? ['help', 'ask', 'skills', 'experience', 'contact'] : ['help', 'skills', 'experience', 'writing', 'contact'];
+const chips = assistantOn ? ['help', 'ask', 'skills', 'experience', 'contact'] : ['help', 'skills', 'experience', 'writing', 'contact'];
 ---
 
 <div class="term" data-term>
@@ -78,7 +78,7 @@ const chips = apiUrl ? ['help', 'ask', 'skills', 'experience', 'contact'] : ['he
         ))
       }
       <div class="line dim">
-        Type <span class="hl">help</span>{apiUrl ? ', ask me anything,' : ''} or tap a command below.
+        Type <span class="hl">help</span>{assistantOn ? ', ask me anything,' : ''} or tap a command below.
       </div>
     </div>
     <form class="term-input" data-form autocomplete="off">
