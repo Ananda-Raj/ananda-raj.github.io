@@ -3,3 +3,10 @@ dist/
 .astro/
 .DS_Store
 .env
+infra/**/.terraform/
+infra/**/*.tfstate
+infra/**/*.tfstate.*
+infra/**/terraform.tfvars
+infra/**/backend.hcl
+infra/**/.build/
+__pycache__/

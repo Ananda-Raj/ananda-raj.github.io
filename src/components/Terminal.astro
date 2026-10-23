@@ -1,5 +1,5 @@
 ---
-import { profile, experience, skills, projects, years, cvFile, phoneDisplay } from '../lib/content';
+import { profile, experience, skills, projects, years, cvFile, phoneDisplay, apiUrl } from '../lib/content';
 import { getPosts, getRepos } from '../lib/feeds';
 import { monthYear } from '../lib/dates';
 
@@ -55,9 +55,9 @@ const commands: Record<string, { desc: string; out: Line[] }> = {
   clear: { desc: 'clear the screen', out: [] },
 };
 
-const data = { commands, years, prompt: 'ananda@kochi:~$' };
+const data = { commands, years, prompt: 'ananda@kochi:~$', api: apiUrl };
 const intro = ['whoami', 'focus'];
-const chips = ['help', 'skills', 'experience', 'writing', 'contact'];
+const chips = apiUrl ? ['help', 'ask', 'skills', 'experience', 'contact'] : ['help', 'skills', 'experience', 'writing', 'contact'];
 ---
 
 <div class="term" data-term>
@@ -77,7 +77,9 @@ const chips = ['help', 'skills', 'experience', 'writing', 'contact'];
           </Fragment>
         ))
       }
-      <div class="line dim">Type <span class="hl">help</span> or tap a command below.</div>
+      <div class="line dim">
+        Type <span class="hl">help</span>{apiUrl ? ', ask me anything,' : ''} or tap a command below.
+      </div>
     </div>
     <form class="term-input" data-form autocomplete="off">
       <label for="term-cmd" class="prompt">{data.prompt}</label>
@@ -91,6 +93,8 @@ const chips = ['help', 'skills', 'experience', 'writing', 'contact'];
 </div>
 
 <script>
+  import { post, errorText, renderText, type Msg } from '../scripts/api';
+
   type Seg = string | { t: string; href?: string; c?: string };
   type Line = Seg[];
 
@@ -104,6 +108,7 @@ const chips = ['help', 'skills', 'experience', 'writing', 'contact'];
   const input = form.querySelector('input')!;
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const history: string[] = [];
+  const chat: Msg[] = [];
   let pos = 0;
   let busy = false;
 
@@ -146,7 +151,25 @@ const chips = ['help', 'skills', 'experience', 'writing', 'contact'];
   const hl = (t: string) => ({ t, c: 'hl' });
   const dim = (t: string) => ({ t, c: 'dim' });
 
-  function respond(raw: string) {
+  async function ask(question: string) {
+    const wait = line([dim('thinking…')]);
+    chat.push({ role: 'user', content: question });
+    try {
+      const { reply } = await post<{ reply: string }>(data.api, '/api/chat', { messages: chat.slice(-6), source: 'terminal' });
+      chat.push({ role: 'assistant', content: reply });
+      wait.remove();
+      for (const text of reply.split('\n')) {
+        const div = line([], 'ai');
+        renderText(div, text);
+      }
+    } catch (err) {
+      chat.pop();
+      wait.remove();
+      say([dim(errorText(err))]);
+    }
+  }
+
+  function respond(raw: string): void | Promise<void> {
     const [name = '', ...args] = raw.trim().split(/\s+/);
     const cmd = aliases[name.toLowerCase()] ?? name.toLowerCase();
     const arg = args.join(' ');
@@ -155,12 +178,16 @@ const chips = ['help', 'skills', 'experience', 'writing', 'contact'];
     if (cmd === 'help') {
       return say(
         ...Object.entries(cmds).map(([k, v]) => [hl(k.padEnd(12)), dim(v.desc)]),
+        ...(data.api ? [[hl('ask …'.padEnd(12)), dim('ask my AI about my work')]] : []),
         [dim('There are a few hidden ones too.')],
       );
     }
     if (cmds[cmd]) return say(...cmds[cmd].out);
 
     switch (cmd) {
+      case 'ask':
+        if (!data.api) break;
+        return arg ? ask(arg) : say(['Usage: ', hl('ask <question>'), dim('  e.g. ask has he used ArgoCD?')]);
       case 'ls':
         return say([Object.keys(files).join('  ')]);
       case 'cat':
@@ -188,9 +215,9 @@ const chips = ['help', 'skills', 'experience', 'writing', 'contact'];
         return say([arg]);
       case 'exit':
         return say(['Thanks for stopping by. The tab stays open though.']);
-      default:
-        return say([`command not found: ${name}. Type `, hl('help'), '.']);
     }
+    if (data.api && raw.trim().split(/\s+/).length > 1) return ask(raw.trim());
+    return say([`command not found: ${name}. Type `, hl('help'), '.']);
   }
 
   function prompt(cmd: string) {
@@ -199,13 +226,13 @@ const chips = ['help', 'skills', 'experience', 'writing', 'contact'];
     return div;
   }
 
-  function run(raw: string) {
+  async function run(raw: string) {
     const cmd = raw.trim();
     prompt(cmd);
     if (cmd) {
       history.push(cmd);
       pos = history.length;
-      respond(cmd);
+      await respond(cmd);
     }
     toEnd();
   }
@@ -221,7 +248,7 @@ const chips = ['help', 'skills', 'experience', 'writing', 'contact'];
     }
     await sleep(250);
     div.remove();
-    run(cmd);
+    await run(cmd);
   }
 
   async function intro() {
@@ -233,15 +260,18 @@ const chips = ['help', 'skills', 'experience', 'writing', 'contact'];
       await typeAndRun(c);
       await sleep(450);
     }
-    line(['Type ', hl('help'), ' or tap a command below.'], 'dim');
+    line(['Type ', hl('help'), data.api ? ', ask me anything,' : '', ' or tap a command below.'], 'dim');
     busy = false;
   }
 
-  form.addEventListener('submit', (e) => {
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
     if (busy) return;
-    run(input.value);
+    const value = input.value;
     input.value = '';
+    busy = true;
+    await run(value);
+    busy = false;
   });
 
   input.addEventListener('keydown', (e) => {
@@ -264,6 +294,11 @@ const chips = ['help', 'skills', 'experience', 'writing', 'contact'];
   root.querySelectorAll<HTMLButtonElement>('[data-cmd]').forEach((b) =>
     b.addEventListener('click', async () => {
       if (busy) return;
+      if (b.dataset.cmd === 'ask') {
+        input.value = 'ask ';
+        input.focus();
+        return;
+      }
       busy = true;
       await (reduce ? Promise.resolve(run(b.dataset.cmd!)) : typeAndRun(b.dataset.cmd!));
       busy = false;
@@ -348,6 +383,9 @@ const chips = ['help', 'skills', 'experience', 'writing', 'contact'];
     color: var(--muted);
   }
   .term-out :global(a) {
+    color: var(--text);
+  }
+  .term-out :global(.ai) {
     color: var(--text);
   }
   .term-input {

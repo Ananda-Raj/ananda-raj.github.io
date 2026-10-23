@@ -67,8 +67,10 @@ const Projects = z.array(
   }),
 );
 
+const Settings = z.object({ apiUrl: z.union([url, z.literal('')]).default('') });
+
 function load<T extends z.ZodTypeAny>(file: string, schema: T): z.infer<T> {
-  const raw = parse(files[`../data/${file}`]);
+  const raw = parse(files[`../data/${file}`]) ?? {};
   const result = schema.safeParse(raw);
   if (!result.success) {
     throw new Error(`src/data/${file} is invalid:\n${result.error.issues.map((i) => `  ${i.path.join('.')}: ${i.message}`).join('\n')}`);
@@ -81,6 +83,10 @@ export const experience = load('experience.yaml', Experience);
 export const skills = load('skills.yaml', Skills);
 export const credentials = load('credentials.yaml', Credentials);
 export const projects = load('projects.yaml', Projects).filter((p) => p.show);
+export const settings = load('settings.yaml', Settings);
+
+// PUBLIC_API_URL overrides the setting for local testing.
+export const apiUrl = (import.meta.env.PUBLIC_API_URL || settings.apiUrl).replace(/\/$/, '');
 
 // Stops the live build from publishing placeholder text.
 const drafts = experience.filter((e) => e.draft).map((e) => e.company);

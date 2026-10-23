@@ -1,0 +1,207 @@
+---
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import { profile } from '../lib/content';
+
+const repo = 'https://github.com/Ananda-Raj/ananda-raj.github.io';
+
+const flows = [
+  {
+    title: 'Publishing',
+    steps: [
+      ['Admin page', 'Sveltia CMS in the browser'],
+      ['GitHub repo', 'content as YAML files'],
+      ['GitHub Actions', 'build, CV PDF, ATS check'],
+      ['GitHub Pages', 'static site'],
+    ],
+  },
+  {
+    title: 'Assistant and contact form',
+    steps: [
+      ['Browser', 'signed request body'],
+      ['CloudFront', 'WAF rate limits, DDoS protection'],
+      ['Lambda', 'Python on Graviton'],
+      ['Amazon Bedrock', 'global inference profile'],
+    ],
+    side: ['DynamoDB: rate limits and spend', 'SES: contact email', 'CloudWatch: 30-day logs'],
+  },
+];
+
+const guards = [
+  ['Only CloudFront can call the function', 'Origin access control signs every request; the Lambda function URL rejects anything unsigned.'],
+  ['Limits at the edge', 'CloudFront sits on the free flat-rate plan, with AWS WAF rate limiting per IP and no overage charges.'],
+  ['Limits per visitor', 'DynamoDB counters cap questions per hour and per day, for each visitor and for the whole site.'],
+  ['A hard monthly cap', 'Every answer records the tokens Bedrock reports. Once the monthly budget is spent, the assistant rests until the 1st.'],
+  ['A circuit breaker', 'A flood switches the function off by setting its concurrency to zero; a schedule switches it back on within the hour.'],
+  ['A narrow assistant', 'Short questions and answers, and a prompt that keeps the model to facts from this site, published at /ai/context.json.'],
+];
+---
+
+<Base title={`How this site works · ${profile.name}`} description="The architecture behind this site: a static Astro site, a git-based admin, and a small serverless AI assistant on AWS with hard cost limits.">
+  <Nav />
+  <main class="wrap page">
+    <p class="kicker">// how this site works</p>
+    <h1>How this site works</h1>
+    <p class="lede">
+      Built like a small production system: static where it can be, serverless where it has to be, and with hard limits on cost. Everything here is
+      open source, including the <a href={`${repo}/tree/master/infra`} target="_blank" rel="noopener">Terraform and Lambda code</a>.
+    </p>
+
+    {
+      flows.map((f) => (
+        <section class="flow">
+          <h2>{f.title}</h2>
+          <ol class="steps">
+            {f.steps.map(([name, what]) => (
+              <li class="card step">
+                <strong>{name}</strong>
+                <span>{what}</span>
+              </li>
+            ))}
+          </ol>
+          {f.side && (
+            <ul class="chips side">
+              {f.side.map((s) => (
+                <li class="chip">{s}</li>
+              ))}
+            </ul>
+          )}
+        </section>
+      ))
+    }
+
+    <section>
+      <h2>Content and publishing</h2>
+      <p>
+        Every piece of content lives as a YAML file in the repository. The admin page commits edits straight to GitHub, and a GitHub Actions workflow
+        builds the site with Astro, renders the CV to PDF with headless Chrome, reads the PDF back the way an applicant tracking system would, and
+        deploys to GitHub Pages. A daily run pulls in new Medium posts and GitHub repositories.
+      </p>
+    </section>
+
+    <section>
+      <h2>The assistant</h2>
+      <p>
+        A static site can't keep secrets, so the assistant runs behind a small API on AWS. CloudFront forwards requests to a Lambda function, which
+        checks the limits below and asks a foundation model on Amazon Bedrock. The model only sees a profile generated from this site at build time,
+        so it answers from the same facts you can read here.
+      </p>
+    </section>
+
+    <section>
+      <h2>Guardrails</h2>
+      <div class="guards">
+        {
+          guards.map(([t, d]) => (
+            <div class="card guard">
+              <h3>{t}</h3>
+              <p>{d}</p>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section>
+      <h2>What it costs</h2>
+      <p>
+        GitHub hosts and builds the site for free. CloudFront is on its free plan, and Lambda and DynamoDB stay inside the free tier at this traffic.
+        The only metered part is the model, capped at a dollar or two a month.
+      </p>
+    </section>
+  </main>
+  <Footer />
+</Base>
+
+<style>
+  .page {
+    padding-top: 120px;
+    padding-bottom: 80px;
+    max-width: 920px;
+  }
+  h1 {
+    font-size: clamp(2.2rem, 5vw, 3.2rem);
+    margin-bottom: 16px;
+  }
+  .lede {
+    color: var(--text-2);
+    font-size: 1.1rem;
+    max-width: 65ch;
+    margin-bottom: 48px;
+  }
+  section {
+    margin-bottom: 44px;
+  }
+  h2 {
+    font-size: 1.35rem;
+    margin-bottom: 14px;
+  }
+  section > p {
+    color: var(--text-2);
+    max-width: 70ch;
+  }
+  .steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 28px;
+  }
+  .step {
+    position: relative;
+    padding: 14px 16px;
+    display: grid;
+    gap: 2px;
+  }
+  .step strong {
+    font-size: 0.98rem;
+  }
+  .step span {
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+  .step:not(:last-child)::after {
+    content: '→';
+    position: absolute;
+    right: -22px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--accent);
+  }
+  .side {
+    margin-top: 14px;
+  }
+  .guards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
+    gap: 14px;
+  }
+  .guard {
+    padding: 18px;
+  }
+  .guard h3 {
+    font-size: 0.98rem;
+    margin-bottom: 6px;
+  }
+  .guard p {
+    color: var(--text-2);
+    font-size: 0.9rem;
+    margin: 0;
+  }
+  @media (max-width: 760px) {
+    .steps {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 22px;
+    }
+    .step:not(:last-child)::after {
+      content: '↓';
+      right: auto;
+      left: 50%;
+      top: auto;
+      bottom: -21px;
+      transform: translateX(-50%);
+    }
+  }
+</style>

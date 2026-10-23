@@ -1,6 +1,6 @@
 ---
 import Icon from './Icon.astro';
-import { profile, cvFile } from '../lib/content';
+import { profile, cvFile, apiUrl } from '../lib/content';
 ---
 
 <footer>
@@ -8,6 +8,7 @@ import { profile, cvFile } from '../lib/content';
     <p>© {new Date().getFullYear()} {profile.name}</p>
     <p class="links">
       <a href={`/${cvFile}`}><Icon name="download" size={15} /> CV (PDF)</a>
+      {apiUrl && <a href="/how-it-works/">How this site works</a>}
       <a href="https://github.com/Ananda-Raj/ananda-raj.github.io" target="_blank" rel="noopener">Site source</a>
     </p>
   </div>

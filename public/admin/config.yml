@@ -167,6 +167,17 @@ singletons:
           - { name: start, label: Start year, widget: number, value_type: int }
           - { name: end, label: End year, widget: number, value_type: int }
 
+  - name: settings
+    label: Site settings
+    icon: settings
+    file: src/data/settings.yaml
+    fields:
+      - name: apiUrl
+        label: API URL
+        type: url
+        required: false
+        hint: The api_url output from Terraform. Leave empty to hide the AI chat and contact form.
+
   - name: projects
     label: Projects
     icon: rocket_launch
