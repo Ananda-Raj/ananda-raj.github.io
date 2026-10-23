@@ -37,6 +37,9 @@ Then, once:
 1. Click the verification link SES emails to `notify_email`.
 2. In the CloudFront console, subscribe the distribution to the **Free** flat-rate plan. It adds a web ACL
    with the core protections (common rule set, known bad inputs, Amazon IP reputation list).
+   The common rule set blocks request bodies over 8 KB (`SizeRestrictions_BODY`), which cuts off long
+   messages; in the WAF console, edit that rule group in the web ACL and set `SizeRestrictions_BODY` to
+   **Count**. The Lambda already rejects bodies over 20 KB.
 3. Add rate limiting: on the distribution's **Security** tab, edit **Security – Web Application Firewall
    (WAF)**, tick **Rate limiting** (30 requests per IP per 5 minutes), save, then choose **Monitor mode →
    Enable blocking**. It only counts requests until blocking is on. If the option isn't there, add a
