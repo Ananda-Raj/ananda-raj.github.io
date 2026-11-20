@@ -4,6 +4,7 @@ import Head from '../components/Head.astro';
 import { profile, experience, skills, credentials, projects, summary, cvFile, phoneDisplay } from '../lib/content';
 import { getPosts } from '../lib/feeds';
 import { range, monthYear } from '../lib/dates';
+import { blocks } from '../lib/text';
 
 const posts = (await getPosts()).slice(0, 3);
 const host = (u: string) => u.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
@@ -80,22 +81,6 @@ const { certifications, recognition, education } = credentials;
         }
       </section>
 
-      {
-        projects.length > 0 && (
-          <section>
-            <h2>Projects</h2>
-            {projects.map((p) => (
-              <div class="job">
-                <h3>{p.name}</h3>
-                <p>
-                  {p.summary} {p.tech.length > 0 && <span class="sub">({p.tech.join(', ')})</span>}
-                </p>
-              </div>
-            ))}
-          </section>
-        )
-      }
-
       <section>
         <h2>Certifications</h2>
         <ul class="plain">
@@ -121,6 +106,36 @@ const { certifications, recognition, education } = credentials;
           }
         </ul>
       </section>
+
+      {
+        projects.length > 0 && (
+          <section>
+            <h2>Projects</h2>
+            {projects.map((p) => (
+              <div class="job">
+                <h3>
+                  {p.name}
+                  {p.status && <span class="sub"> · {p.status}</span>}
+                </h3>
+                {blocks(p.summary).map((b) =>
+                  b.type === 'list' ? (
+                    <ul>
+                      {b.lines.map((l) => (
+                        <li>{l}</li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p>{b.lines.join(' ')}</p>
+                  ),
+                )}
+                {(p.tech.length > 0 || p.repo || p.url) && (
+                  <p class="sub">{[p.tech.join(', '), p.url, p.repo].filter(Boolean).join(' · ')}</p>
+                )}
+              </div>
+            ))}
+          </section>
+        )
+      }
 
       {
         posts.length > 0 && (

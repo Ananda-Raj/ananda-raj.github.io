@@ -8,3 +8,4 @@ infra/**/*.tfstate
 infra/**/*.tfstate.*
 infra/**/.build/
 __pycache__/
+log.temp

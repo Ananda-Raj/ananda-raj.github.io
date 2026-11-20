@@ -2,6 +2,7 @@
 import Icon from './Icon.astro';
 import { profile, projects } from '../lib/content';
 import { getRepos } from '../lib/feeds';
+import { blocks } from '../lib/text';
 
 const repos = (await getRepos()).slice(0, 6);
 ---
@@ -20,7 +21,32 @@ const repos = (await getRepos()).slice(0, 6);
                 <h3>{p.name}</h3>
                 {p.status && <span class="chip status">{p.status}</span>}
               </div>
-              <p>{p.summary}</p>
+              {(() => {
+                const all = blocks(p.summary);
+                const render = (list: typeof all) =>
+                  list.map((b) =>
+                    b.type === 'list' ? (
+                      <ul class="points">
+                        {b.lines.map((l) => (
+                          <li>{l}</li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p>{b.lines.join(' ')}</p>
+                    ),
+                  );
+                return all.length > 2 ? (
+                  <Fragment>
+                    {render(all.slice(0, 2))}
+                    <details>
+                      <summary>More details</summary>
+                      {render(all.slice(2))}
+                    </details>
+                  </Fragment>
+                ) : (
+                  render(all)
+                );
+              })()}
               <ul class="chips">
                 {p.tech.map((t) => (
                   <li class="chip">{t}</li>
@@ -87,6 +113,26 @@ const repos = (await getRepos()).slice(0, 6);
   }
   .project p {
     color: var(--text-2);
+  }
+  .points {
+    margin: 0 0 1em;
+    padding-left: 18px;
+    color: var(--text-2);
+  }
+  .points li {
+    margin-bottom: 4px;
+  }
+  .points li::marker {
+    color: var(--accent);
+  }
+  details {
+    margin-bottom: 1em;
+  }
+  summary {
+    cursor: pointer;
+    color: var(--accent-2);
+    font-weight: 600;
+    margin-bottom: 10px;
   }
   .status {
     color: var(--accent-2);

@@ -2,6 +2,7 @@
 import { profile, experience, skills, projects, years, cvFile, phoneDisplay, apiUrl, assistantOn } from '../lib/content';
 import { getPosts, getRepos } from '../lib/feeds';
 import { monthYear } from '../lib/dates';
+import { firstLine } from '../lib/text';
 
 type Seg = string | { t: string; href?: string; c?: string };
 type Line = Seg[];
@@ -33,7 +34,7 @@ const commands: Record<string, { desc: string; out: Line[] }> = {
   projects: {
     desc: "things I've built",
     out: [
-      ...projects.map((p) => [hl(p.name), ` ${p.summary}`]),
+      ...projects.map((p) => [hl(p.name), ` ${firstLine(p.summary, p.name)}`]),
       ...repos.map((r) => [link(r.name, r.url), dim(r.description ? `  ${r.description}` : '')]),
       [link('all repositories →', `${profile.links.github}?tab=repositories`)],
     ],

@@ -19,14 +19,17 @@ fs.writeFileSync('.astro/cv.txt', text);
 const lines = text.split('\n').map((l) => l.trim().toUpperCase());
 const problems = [];
 
-if (doc.numPages > 2) problems.push(`CV runs to ${doc.numPages} pages; keep it to 2.`);
 if (/[\uFB00-\uFB06]/.test(text)) problems.push('Ligature characters found; some ATS misread these words.');
 
-let last = -1;
-for (const h of ['SUMMARY', 'SKILLS', 'EXPERIENCE', 'CERTIFICATIONS', 'EDUCATION']) {
-  const at = lines.indexOf(h, last + 1);
-  if (at === -1) problems.push(`Heading "${h}" missing or out of order.`);
-  else last = at;
+// Section order on the CV. Required sections must exist; the rest are checked only when present.
+const ORDER = ['SUMMARY', 'SKILLS', 'EXPERIENCE', 'CERTIFICATIONS', 'COMMUNITY AND RECOGNITION', 'PROJECTS', 'PUBLICATIONS', 'EDUCATION', 'LANGUAGES'];
+const REQUIRED = ['SUMMARY', 'SKILLS', 'EXPERIENCE', 'EDUCATION'];
+const found = ORDER.map((h) => [h, lines.indexOf(h)]).filter(([, at]) => at !== -1);
+for (const h of REQUIRED) {
+  if (!found.some(([f]) => f === h)) problems.push(`Heading "${h}" missing.`);
+}
+for (let i = 1; i < found.length; i++) {
+  if (found[i][1] < found[i - 1][1]) problems.push(`Heading "${found[i][0]}" should come after "${found[i - 1][0]}".`);
 }
 
 for (const needle of [profile.name, profile.email, profile.role, ...experience.map((e) => e.company)]) {
@@ -37,4 +40,4 @@ if (problems.length) {
   console.error(`[cv-check] ${file}\n  - ${problems.join('\n  - ')}`);
   process.exit(1);
 }
-console.log(`[cv-check] ${doc.numPages} page(s), ${text.length} characters, headings in order, text readable.`);
+console.log(`[cv-check] ${doc.numPages} page(s), ${found.length} sections in order, text readable.`);

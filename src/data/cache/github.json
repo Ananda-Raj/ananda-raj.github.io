@@ -1,5 +1,12 @@
 [
   {
+    "name": "share-secrets-app",
+    "url": "https://github.com/Ananda-Raj/share-secrets-app",
+    "description": "Self-hosted, zero-knowledge one-time secret sharing on AWS. Encrypted in the browser, sent by email with a one-time code, gone after one view. Serverless, one Terraform stack, about $0–3 a month.",
+    "language": "TypeScript",
+    "updated": "2026-11-19T21:03:06Z"
+  },
+  {
     "name": "ec2-ssm-patching",
     "url": "https://github.com/Ananda-Raj/ec2-ssm-patching",
     "description": "",
