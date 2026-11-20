@@ -1,11 +1,46 @@
+- name: SecretShare
+  show: true
+  status: Production Ready
+  summary: |-
+    SecretShare: self-hosted, zero-knowledge secret sharing on AWS
+
+    Sending passwords, API keys and tokens by email or chat leaves copies everywhere. SecretShare is an open-source tool that delivers a secret once, safely, and then deletes it.
+
+    How it works:
+    • The secret is encrypted in the sender's browser (AES-256-GCM, Web Crypto API). The server only ever stores ciphertext.
+    • The decryption key travels in the link's URL fragment, which browsers never send to a server.
+    • The receiver gets an email link and a separate 6-digit one-time code. They don't need an account.
+    • Burn after read: the secret is deleted when it's opened, or when it expires (5 minutes to 7 days).
+
+    Highlights:
+    • Send to up to 10 people at once, attach small files, and revoke anything not yet opened
+    • Sign in with any OIDC provider (Entra ID, Okta, Google Workspace, Auth0, Keycloak) or local accounts, with optional MFA
+    • Admin console: activity log with CSV export, user and role management with safeguards, sharing rules by email domain, and four themes with custom branding
+    • Least-privilege IAM, JWT auth at API Gateway, rate limiting, and an audit trail the app itself can't delete
+
+    Built with:
+    AWS Lambda (Node.js 24, TypeScript), API Gateway, DynamoDB, Cognito, SES, S3 + CloudFront and EventBridge. All the infrastructure is one Terraform stack, and GitHub Actions deploys with OIDC, so no AWS keys are stored anywhere. It runs for about $0–3 a month.
+
+    Open source (Apache-2.0)
+  tech:
+    - NodeJs
+    - AWS
+    - Terraform
+  repo: https://github.com/Ananda-Raj/share-secrets-app
 - name: Plotmiles
   show: false
   status: In development
   summary: Trip planner for long road trips across India. Sorts hundreds of stops into one route, plans safe daylight driving days with sensible night halts, and keeps working offline.
-  tech: [JavaScript, Leaflet, OSRM, AWS Lambda, Terraform]
-
+  tech:
+    - JavaScript
+    - Leaflet
+    - OSRM
+    - AWS Lambda
+    - Terraform
 - name: Foldedmiles
-  show: false
+  show: true
   status: In development
   summary: Offline Mac app that folds your trip photos into printable albums. No AI, no data collected, open source under GPLv3.
-  tech: [Swift, macOS]
+  tech:
+    - Swift
+    - macOS
